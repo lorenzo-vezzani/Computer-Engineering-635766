@@ -4,6 +4,6 @@ Each project was created on a Windows computer, but for every detail please visi
 
 For my personal projects: *work in progress*
 
-My Contacts:
+My Contacts:\n
 Email: lorenzovezzani8@gmail.com
 LinkedIn: *work in progress*
