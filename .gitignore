@@ -1,0 +1,17 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Machine learning artifacts
+*.h5
+*.keras
+*.ckpt
+
+# IDE
+.vscode/
+.idea/
