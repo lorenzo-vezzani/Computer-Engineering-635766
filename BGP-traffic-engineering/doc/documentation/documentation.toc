@@ -50,8 +50,8 @@
 \contentsline {section}{\numberline {3.4}Network automation}{28}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Load balancing algorithm}{29}{subsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.4.2}Local Preference Setting}{30}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Filtering method setting}{31}{subsection.3.4.3}%
-\contentsline {subsection}{\numberline {3.4.4}BGP Clearing}{31}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.3}MED setting}{31}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}BGP Clearing}{32}{subsection.3.4.4}%
 \contentsline {subsection}{\numberline {3.4.5}Route Maps Clearing}{32}{subsection.3.4.5}%
 \contentsline {chapter}{\numberline {4}Testing}{33}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Network deploy}{33}{section.4.1}%

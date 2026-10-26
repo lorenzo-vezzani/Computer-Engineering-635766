@@ -1033,19 +1033,24 @@ Moreover, a file called \texttt{traffic-matrices.json} is passed to the manger a
 \end{lstlisting}
 
 \subsection{Load balancing algorithm}
-In the Python script, there is an infinite loop. In every iteration, a new traffic matrix is obtained, and a simple greedy algorithm splits the traffic. The greedy algorithm exploits two buckets in order to determine an efficient traffic distribution across upstream links. The algorithm operates iteratively\footnote{Between every iteration \texttt{time.sleep(180)} is called.} according to the following steps:
+In the Python script, there is an infinite loop. In every iteration, a new traffic matrix is obtained, and a simple greedy algorithm splits the traffic. Only the traffic flowing from the customer networks (CU1 and CU2) towards the Internet is considered: it is the traffic that each customer edge (CE) can forward either to PE1 or to PE2, and that the gateways (GW) can send either to UP1 or to UP2. The greedy algorithm exploits two buckets in order to determine an efficient traffic distribution across the provider edges and the upstream links. The algorithm operates iteratively\footnote{Between every iteration \texttt{time.sleep(180)} is called.} according to the following steps:
 \begin{enumerate}
-    \item Retrieve a route from the set of available routes.
+    \item Retrieve a route (CU $\rightarrow$ Internet destination) from the set of available routes.
     \item Among the two buckets, select the one with the minimum amount of expected traffic.
-    \item Insert the selected route into the chosen bucket and update the bucket's total expected traffic by adding the traffic associated with the route.
+    \item Insert the destination of the route into the chosen bucket and update the bucket's total expected traffic by adding the traffic associated with the route.
     \item If there are still unprocessed routes, return to step 1; otherwise, terminate the algorithm.
 \end{enumerate}
-An additional constraint is imposed on the route allocation process.  
-Consider the case in which a route from CU1 to the Internet is assigned to a given gateway (GW). If a subsequent route from CU2 to the Internet is processed, it must be served by the same gateway previously selected.
+An additional constraint is imposed on the route allocation process.
+Consider the case in which a route from CU1 to a given Internet destination is assigned to a bucket. If a subsequent route from CU2 to the same destination is processed, it must be inserted in the same bucket, and therefore served by the same PE and the same GW.
 In other words, it is not allowed to assign the route (CU1 $\rightarrow$ Internet) to GW1 and the route (CU2 $\rightarrow$ Internet) to GW2, unless additional mechanisms such as traffic engineering or segment routing are employed.\\
-Once the algorithm has been executed, \textit{local\_pref} is exploited to balance the outbound traffic and a filtering method for the inbound traffic. In particular, bucket1 is used to determine which routes must have a 200 local-pref to GW1 (to-internet routes) and which routes must be filtered in GW2 (from-internet routes). The opposite goes for bucket2.
+Once the algorithm has been executed, two BGP attributes are exploited, each one acting on a different segment of the path:
+\begin{itemize}
+    \item \textbf{MED} balances the traffic between the customer edges and the provider edges (CE $\rightarrow$ PE).
+    \item \textit{local\_pref} balances the outbound traffic between the gateways and the upstream providers (GW $\rightarrow$ UP).
+\end{itemize}
+In particular, bucket1 is used to determine which routes must be announced with a low MED by PE1 (and with a high MED by PE2), and which routes must have a 200 local-pref in GW1 (to-Internet routes). The opposite goes for bucket2: low MED on PE2, high MED on PE1, and local-pref 200 on GW2. In this way, the traffic towards a destination in bucket1 follows the path CE $\rightarrow$ PE1 $\rightarrow$ GW1 $\rightarrow$ UP1, while the traffic towards a destination in bucket2 follows CE $\rightarrow$ PE2 $\rightarrow$ GW2 $\rightarrow$ UP2.
 \\
-Note that we use route filtering instead of \textbf{MED} to balance inbound traffic, since the network topology does not allow MED to be applied effectively. In particular, MED is unsuitable for our scenario because it cannot discriminate among multiple entry points within the core AS. UP1 and UP2 each have only a single link toward the core (to GW1 and GW2, respectively); therefore, when traffic destined to a customer network reaches a given UP, there is only one possible path into the core. As a consequence, the only way to control which UP handles traffic for a given customer network is to select a single GW to announce that network. This ensures that only the corresponding UP advertises the route to the Internet.
+Note that MED is well suited to the CE $\rightarrow$ PE segment of the topology: each CE is connected to both PE1 and PE2, which belong to the same AS. Since MED is compared only between paths received from the same neighboring AS, the CE can effectively use it to choose between the two PEs. Inbound traffic (Internet $\rightarrow$ customer networks) is not explicitly engineered.
 
 \subsection{Local Preference Setting}
 The \textit{Local Preference} is set using two route-maps, \textbf{SET-LP-GW1} and \textbf{SET-LP-GW2}, respectively applied on \texttt{GW1} and \texttt{GW2}.
@@ -1053,119 +1058,100 @@ For each entry inside a bucket, an \textit{IP prefix-list} is created, together 
 This rule is applied when a match with the previously defined prefix-list occurs and consists solely in setting the local preference value to 200.
 If the route map is created in GW1, this has to be applied to the routes received from UP1. The opposite goes for GW2 and UP2.
 \begin{lstlisting}[language=Python, style=stylePython, caption=Local Preference Route Map Creation, label=lst:LP-ROUTEMAP-CREATION]
-def configure_bgp_local_pref(gw_ip, route_out_map_name, bucket):
+def configure_bgp_local_pref(gw_ip, route_map_name, bucket):
 
     my_up = UP1_IP if gw_ip == GW1_IP else UP2_IP
-    my_up_as = UP1_AS if gw_ip == GW1_IP else UP2_AS
 
     cmds = ['configure terminal']
 
+    # rebuild the route-map from scratch
+    cmds.append(f'no route-map {route_map_name}')
+
     seq = 10
 
-    for entry in bucket:
-        # from internet route, not interesting here
-        if(entry == CU1_NET or entry == CU2_NET):
-            continue
-        
-        prefix = entry
+    for prefix in bucket:
         pl_name = f'PL-{prefix.replace("/", "_")}'
-        
-        cmds.append(f'ip prefix-list {pl_name} permit {prefix}')    
-        cmds.append(f'route-map {route_out_map_name} permit {seq}')
+
+        cmds.append(f'ip prefix-list {pl_name} permit {prefix}')
+        cmds.append(f'route-map {route_map_name} permit {seq}')
         cmds.append(f' match ip address prefix-list {pl_name}')
-        cmds.append(f' set local-preference 200')
+        cmds.append(f' set local-preference {LOCAL_PREF}')
 
         seq += 10
 
     # catch all preference
-    cmds.append(f'route-map {route_out_map_name} permit 999')
+    cmds.append(f'route-map {route_map_name} permit 999')
 
+    # apply the route-map inbound from the upstream
     cmds.append(f'router bgp {MY_AS}')
-    cmds.append(f' neighbor {my_up} remote-as {my_up_as}')
-    cmds.append(f' neighbor {my_up} route-map {route_out_map_name} in')
+    cmds.append(f' neighbor {my_up} route-map {route_map_name} in')
 
     cmds.append('end')
-
-    vtysh_cmd = "vtysh \\\n" + " \\\n".join([f'    -c "{c}"' for c in cmds])
 \end{lstlisting}
 After the command building, this will be passed to the target gateway using \texttt{paramiko} library.
 
 
-\subsection{Filtering method setting}
-Similarly to local preference, filtering is set using 2 route-maps as well: \textbf{SET-FILTERING-GW1} and \textbf{SET-FILTERING-GW2}. After ip-prefix list is created, a new \textbf{deny} rule, matching with the ip-prefix, is defined. This route-map is applied to all iBGP neighbors of the interested gateway\footnote{Note that in this case bucket1 is used to create deny rules on GW2, and bucket2 for GW1.}. 
-\begin{lstlisting}[language=Python, style=stylePython, caption=Filtering Route Map Creation, label=lst:FILTERING-ROUTEMAP-CREATION]
-def configure_filtering(gw_ip, route_in_map_name, bucket):
-    
+\subsection{MED setting}
+Similarly to local preference, the MED is set using 2 route-maps as well: \textbf{SET-MED-PE1} and \textbf{SET-MED-PE2}, respectively applied on \texttt{PE1} and \texttt{PE2}. For each destination, an \textit{IP prefix-list} is created, together with a rule in the route-map that matches the prefix-list and sets the \texttt{metric} (MED). Each PE sets a low MED (50) on the destinations of the bucket it has to serve, and a high MED (200) on the destinations of the other bucket\footnote{Note that in this case bucket1 is served by PE1 (low MED) and backed up on PE2 (high MED), while for bucket2 the opposite holds.}. Since the CEs prefer the path with the lowest MED, the traffic towards each destination is sent to the intended PE, while the other PE remains available as a backup. This route-map is applied in the \textbf{outbound} direction to all the CE neighbors of the PE.
+\begin{lstlisting}[language=Python, style=stylePython, caption=MED Route Map Creation, label=lst:MED-ROUTEMAP-CREATION]
+def configure_bgp_med(pe_ip, route_map_name, preferred, backup):
+
     cmds = ['configure terminal']
+
+    # rebuild the route-map from scratch
+    cmds.append(f'no route-map {route_map_name}')
 
     seq = 10
 
-    for entry in bucket:
-        # to internet route, not interesting here
-        if not (entry == CU1_NET or entry == CU2_NET):
-            continue
-
-        # buiding filter using route map
-        
-        prefix = entry
+    for prefix, med in ([(p, MED_PREFERRED) for p in preferred] +
+                        [(p, MED_BACKUP) for p in backup]):
         pl_name = f'PL-{prefix.replace("/", "_")}'
-        
+
         cmds.append(f'ip prefix-list {pl_name} permit {prefix}')
-        cmds.append(f'route-map {route_in_map_name} deny {seq}')
+        cmds.append(f'route-map {route_map_name} permit {seq}')
         cmds.append(f' match ip address prefix-list {pl_name}')
+        cmds.append(f' set metric {med}')
 
         seq += 10
-    
-    # catch-all route map
-    cmds.append(f'route-map {route_in_map_name} permit 999')
 
-    # appling the route map
-    cmds.append(f' neighbor {my_up} remote-as {my_up_as}')
-    cmds.append(f' neighbor {my_up} route-map {route_inbound_map_name} out')
+    # catch-all
+    cmds.append(f'route-map {route_map_name} permit 999')
+
+    # apply the route-map outbound towards the CEs
+    cmds.append(f'router bgp {MY_AS}')
+    for ce_ip in CE_NEIGHBORS[pe_ip]:
+        cmds.append(f' neighbor {ce_ip} route-map {route_map_name} out')
 
     cmds.append('end')
-
-    vtysh_cmd = "vtysh \\\n" + " \\\n".join([f' -c "{c}"' for c in cmds])
 \end{lstlisting}
 
 \subsection{BGP Clearing}
-After route-maps have been created and therefore new rules have to be applied, it is important to clear BGP session with a \texttt{soft BGP clear}.
+After route-maps have been created and therefore new rules have to be applied, it is important to clear BGP session with a \texttt{soft BGP clear}. On the gateways, both the iBGP peers and the upstream are refreshed with a soft clear in both directions, while on the PEs a \texttt{soft out} towards the CEs is enough, since the MED policy is outbound. The script waits for the configuration command to terminate before issuing the clear commands.
 \begin{lstlisting}[language=Python, style=stylePython, caption=BGP clearing, label=lst:BGP-CLEARING]
-def clear_bgp(peer_ip, ssh):
+def run_vtysh(ssh, cmds):
 
-    cmd = f
-        "vtysh 
-        -c 'clear ip bgp {peer_ip} soft in' 
-        -c 'clear ip bgp {peer_ip} soft out'"
+    vtysh_cmd = "vtysh \\\n" + " \\\n".join(f'    -c "{c}"' for c in cmds)
 
-    stdin, stdout, stderr = ssh.exec_command(cmd)
+    stdin, stdout, stderr = ssh.exec_command(vtysh_cmd)
+    # wait for the command to complete
+    stdout.channel.recv_exit_status()
+
+# on the PEs: only the outbound policy changed
+for ce_ip in CE_NEIGHBORS[pe_ip]:
+    run_vtysh(ssh, [f'clear ip bgp {ce_ip} soft out'])
+
+# on the GWs: refresh iBGP peers and upstream
+for peer_ip in ALL_PEERS:
+    if peer_ip != gw_ip:
+        run_vtysh(ssh, [f'clear ip bgp {peer_ip} soft in',
+                        f'clear ip bgp {peer_ip} soft out'])
+run_vtysh(ssh, [f'clear ip bgp {my_up} soft in',
+                f'clear ip bgp {my_up} soft out'])
 \end{lstlisting}
 
 \subsection{Route Maps Clearing}
-In loop iteration \textit{i}, iteration \textit{i-1} route-map have to be removed to avoid conflicts between rules.
-\begin{lstlisting}[language=Python, style=stylePython, caption=Rout-Map removing, label=lst:ROUTEMAP-REMOVING]
-def remove_all_route_maps(ip):
+In loop iteration \textit{i}, iteration \textit{i-1} route-map have to be removed to avoid conflicts between rules. To avoid a time window in which no policy is applied, each route-map is removed and recreated within the same \texttt{vtysh} call: the first command is \texttt{no route-map <name>}, immediately followed by the new rules (see the listings above). The prefix-lists are not removed, since they are created again with the same content at every iteration.
 
-    # ... ssh connection via paramiko ...
-
-    cmd = "vtysh -c 'show route-map'"
-    stdin, stdout, stderr = ssh.exec_command(cmd)
-    output = stdout.read().decode()
-
-    route_maps = set(
-        re.findall(r"^route-map:\s+(\S+)", output, re.MULTILINE)
-    )
-
-    cmds = ['configure terminal']
-
-    for rm in route_maps:
-        cmds.append(f"no route-map {rm}")
-
-    cmds.append("end")
-
-    vtysh_cmd = "vtysh \\\n" + " \\\n".join([f' -c "{c}"' for c in cmds])
-
-\end{lstlisting}
 \chapter{Testing}
 
 \section{Network deploy}
