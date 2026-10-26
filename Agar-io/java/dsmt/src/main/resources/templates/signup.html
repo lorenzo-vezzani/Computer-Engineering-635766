@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BallZone — Sign up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/general.css}" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="mouse-dot"></div>
+<script th:src="@{/js/custom_pointer.js}" type="text/javascript"></script>
+
+<div id="signup-screen"  class="main-box">
+    <div class="panel">
+        <div class="logo">BallZone</div>
+        <div class="subtitle">BallZone Battle Royale</div>
+
+        <form th:action="@{/auth/signup}" method="post">
+            <div class="field">
+                <label class="field-label" for="username"><span class="marker">▸</span>Username</label>
+                <input class="field-input" type="text" id="username" name="username" placeholder="alice" autocomplete="off" required>
+            </div>
+
+            <div class="field">
+                <label class="field-label" for="email"><span class="marker">▸</span>Email</label>
+                <input class="field-input" type="email" id="email" name="email" placeholder="alice@email.com" autocomplete="off" required>
+            </div>
+
+            <div class="field">
+                <label class="field-label" for="password"><span class="marker">▸</span>Password</label>
+                <input class="field-input" type="password" id="password" name="password" placeholder="••••••" autocomplete="off" required>
+            </div>
+
+            <div class="field">
+                <label class="field-label" for="confirmPassword"><span class="marker">▸</span>Confirm Password</label>
+                <input class="field-input" type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••" autocomplete="off" required>
+            </div>
+
+            <button class="connect-btn" type="submit">▶ Sign Up</button>
+        </form>
+
+        <div class="error-box" th:classappend="${error} ? ' visible'" th:text="${error} ? ${error} : ''"></div>
+
+        <div class="page-link">
+            <a th:href="@{/login}">Already registered? Login</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

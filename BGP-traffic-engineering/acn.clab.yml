@@ -1,0 +1,144 @@
+name: acn-prj
+
+# Avoid having clab prefix on all nodes names (clab-<lab>-<node>)
+prefix: __lab-name
+
+mgmt:
+  network: acn_prj_mgmt              # name
+  ipv4-subnet: 10.255.255.0/24       # ipv4 range
+
+
+topology:
+  
+  groups:
+    frr_nodes:
+      env:
+        CLAB_MGMT_VRF: MGMT
+        CLAB_MGMT_GW: 10.255.255.1
+      kind: linux
+      image: frr-ssh:10.4.1
+      binds:
+        - ./config/startup/__clabNodeName__.conf:/etc/frr/frr.conf
+        - ./config/frr/daemons:/etc/frr/daemons
+        - ./config/frr/vtysh.conf:/etc/frr/vtysh.conf
+        - ./config/frr/frr-cfg.sh:/frr-cfg.sh
+      exec:
+        - bash /frr-cfg.sh
+
+    alp_nodes:
+      kind: linux
+      image: alpine-ssh:3.19.1
+      binds:
+        - ./config/alpine/alp-cfg.sh:/alp-cfg.sh
+        - ./config/startup/__clabNodeName__.sh:/conf.sh
+      exec:
+        - sh /alp-cfg.sh
+
+    pyt_nodes:
+      kind: linux
+      image: python-ssh:3.12-alpine
+      binds:
+        - ./config/alpine/alp-cfg.sh:/alp-cfg.sh
+        - ./config/startup/__clabNodeName__.sh:/conf.sh
+        - ./config/mngr/main.py:/main.py
+        - ./config/mngr/traffic-matrices.json:/traffic-matrices.json
+      exec:
+        - sh /alp-cfg.sh
+
+    bridges:
+      kind: bridge
+
+
+  # List of all nodes
+  nodes:
+
+    # === Endopints (Alpine) ===
+
+    n1:
+      group: alp_nodes
+      mgmt-ipv4: 10.255.255.201
+    n2:
+      group: alp_nodes
+      mgmt-ipv4: 10.255.255.202
+      
+    mngr:
+      group: pyt_nodes
+      mgmt-ipv4: 10.255.255.205
+
+
+    # === Routers (FRR) ===
+
+    # Customers
+    CE1:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.101
+    CE2:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.102
+
+    # Core 
+    PE1:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.111
+    PE2:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.112
+    GW1:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.121
+    GW2:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.122
+
+    # Providers 
+    UP1:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.131
+    UP2:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.132
+
+    # === Internet ===
+
+    INT:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.141
+
+    n3:
+      group: alp_nodes
+      mgmt-ipv4: 10.255.255.203
+
+    n4:
+      group: alp_nodes
+      mgmt-ipv4: 10.255.255.204
+  
+    # === Bridges ===
+
+    br-clab-core:
+      group: bridges
+
+  # List of all links
+  links:
+    - endpoints: ["n1:eth1", "CE1:eth1"]
+    - endpoints: ["n2:eth1", "CE2:eth1"]
+
+    - endpoints: ["PE1:eth2", "CE1:eth2"]
+    - endpoints: ["PE1:eth3", "CE2:eth3"]
+    - endpoints: ["PE2:eth2", "CE2:eth2"]
+    - endpoints: ["PE2:eth3", "CE1:eth3"]
+
+    - endpoints: ["br-clab-core:eth1", "PE1:eth1"]
+    - endpoints: ["br-clab-core:eth2", "PE2:eth1"]
+    - endpoints: ["br-clab-core:eth3", "GW1:eth1"]
+    - endpoints: ["br-clab-core:eth4", "GW2:eth1"]
+    - endpoints: ["br-clab-core:eth5", "mngr:eth1"]
+
+    - endpoints: ["GW1:eth2", "UP1:eth2"]
+    - endpoints: ["GW2:eth2", "UP2:eth2"]
+
+    - endpoints: ["UP1:eth1", "INT:eth1"]
+    - endpoints: ["UP2:eth1", "INT:eth2"]
+
+    - endpoints: ["INT:eth3", "n3:eth1"]
+    - endpoints: ["INT:eth4", "n4:eth1"]
+    

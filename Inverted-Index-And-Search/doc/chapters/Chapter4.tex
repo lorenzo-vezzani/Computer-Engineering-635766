@@ -1,0 +1,138 @@
+\section{MapReduce and Hadoop code}
+The system uses \textbf{MapReduce}, via the \textbf{Hadoop} framework, to process large-scale data efficiently. The Hadoop cluster is optimized for virtual machines with limited memory through customized YARN and MapReduce settings. YARN manages resources and memory (up to 5 GB per node), while MapReduce configurations allocate 2048 MB to key tasks, with JVM heaps limited ot 1536 MB.
+
+\newpage 
+
+%PseudoCode
+\lstdefinelanguage{PseudoCode}{
+	keywords={class, method, for, all, in, do, end, Emit, if, else, then},
+	sensitive=true,
+	morecomment=[l]{//},
+	morecomment=[s]{/}{/},
+	morestring=[b]",
+	keywordstyle=\bfseries\color{blue},
+	commentstyle=\color{gray}\itshape,
+	stringstyle=\color{red},
+	basicstyle=\ttfamily\small,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	stepnumber=1,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	tabsize=2,
+	breaklines=true,
+	breakatwhitespace=true,
+	escapeinside={(@}{@)}
+}
+\begin{center}
+	\begin{minipage}{0.9\linewidth}
+		\begin{lstlisting}[language=PseudoCode]
+class TokenizerMapperStateful
+
+	method initialize()
+		word_counts <= New Empty AssociativeArray()
+	end method
+	
+	method map(offset o, doc d)
+		Filename <= retrieve_file_name()
+		
+		for all term t in doc d do
+			if word_counts[t] does not contain Filename then
+				word_counts[t][Filename] <= 1
+			else
+				word_counts[t][Filename] <= word_counts[t][Filename] + 1
+			end if
+		end for
+		
+		if word_counts.size() > FLUSH_THRESHOLD then
+			flush(context)
+		end if
+	end method
+	
+	method flush(context)
+		for each word in word_counts do
+			for each filename in word_counts[word] do
+				value <= filename + ":"+ 
+				+word_counts[word][filename]
+				
+				emit(word, value)
+			end for
+		end for
+		clear word_counts
+	end method
+	
+	method cleanup(context)
+		flush(context)
+	end method
+
+end class
+		\end{lstlisting}
+		\captionof{figure}{Stateful Mapper PseudoCode}
+		\label{fig:pseudocode-stateful-mapper}
+	\end{minipage}
+\end{center}
+\begin{center}
+	\begin{minipage}{0.9\linewidth}
+		\begin{lstlisting}[language=PseudoCode]
+class TokenizerMapper
+	method map(offset o, doc d)
+		Filename <= retrieve_file_name()
+		for all term t in doc d do
+			emit(term t, filename + ":1")
+		end for
+	end method
+end class
+		\end{lstlisting}
+		\captionof{figure}{Stateless Mapper PseudoCode}
+		\label{fig:pseudocode-stateless-mapper}
+	\end{minipage}
+\end{center}
+	\begin{center}
+		\begin{minipage}{0.9\linewidth}
+			\begin{lstlisting}[language=PseudoCode]
+class DocumentCountReducer
+	method reduce(term, postingsList)
+		docCounts <= {}
+		for all posting in postingsList do
+			for pair in split(posting, ",") do
+				doc, cnt <= splitLast(pair, ":")
+				docCounts[doc] docCounts.get(doc, 0) + toInt(cnt)
+			endfor
+		endfor
+	emit(term, format(docCounts))
+	end method
+end class
+			\end{lstlisting}
+			\captionof{figure}{Reducer PseudoCode}
+			\label{fig:pseudocode-reducer}
+		\end{minipage}
+\end{center}
+
+The application offers two interchangeable MapReduce variants: a classic \textbf{Mapper with optional Combiner} and a \textbf{Stateful In-Mapper Combiner}, selectable via command-line flags for modularity and flexibility.
+
+To address Hadoop's inefficiency with many small files, we use \texttt{CombineFileSplit} to reduce task overhead. 
+
+In Hadoop, the \texttt{CombineFileInputFormat} class does not know by itself how to read each individual file within a \texttt{CombineFileSplit}. For this reason, it requires a \textbf{custom RecordReader} for each combined file. This is the job of \texttt{MyCombineTextInputFormat}.
+
+\texttt{MyCombineFileRecordReaderWrapper} is a wrapper around LineRecordReader, which reads one line at a time as in a normal Hadoop job. Its main function, however, is another: \textbf{it keeps track of the name of the file it is reading from}, using a \texttt{ThreadLocal} object. This is essential for an inverted index, because each word read from the line must be associated with the document (i.e. the file) in which it appears. 
+
+The \texttt{TokenizerMapStateful} class accumulates word counts in memory using a data structure initialized in \texttt{setup()}, mapping words to document-specific counts. Once a predefined \textbf{threshold} is exceeded, it triggers a \textbf{flush}, emitting partial results in the format: $\langle \textbf{word}, \textbf{doc-id:count} \rangle$
+
+Residual data is emitted during \texttt{cleanup()}.
+
+In contrast, the \texttt{TokenizerMapper} class (lacking in-mapper combining) directly emits key-value pairs of the form:
+\[
+\langle \textbf{word}, \textbf{doc-id:1} \rangle
+\]
+
+The \texttt{CombinerDocCounts} class implements the Combiner logic, aggregating intermediate values by summing occurrences per document:
+\[
+\langle \textbf{word}, \textbf{doc-id:count} \rangle
+\]
+
+Finally, the \texttt{DocumentCountReducer} consolidates all partial counts per word across files and formats the output as:
+
+\[
+\texttt{word \textbackslash t f.name1:count1 \textbackslash t f.name2:count2}
+\]

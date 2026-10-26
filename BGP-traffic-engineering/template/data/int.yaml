@@ -1,0 +1,56 @@
+config_filename: INT.conf
+
+name: INT
+hostname: INT
+username: admin
+password: False
+
+routing_enabled: True
+
+interfaces:
+  - name: lo
+    ipv4: 203.0.114.1/32
+    switchport: False
+    description: LOOPBACK
+
+  - name: eth0
+    description: MANAGEMENT
+
+  - name: eth1
+    ipv4: 172.16.2.2/30
+    switchport: False
+    description: to_UP1
+
+  - name: eth2
+    ipv4: 172.16.3.2/30
+    switchport: False
+    description: to_UP2
+
+  - name: eth3
+    ipv4: 203.0.113.1/25
+    switchport: False
+    description: to_n3
+
+  - name: eth4
+    ipv4: 203.0.113.129/25
+    switchport: False
+    description: to_n4
+
+bgp:
+  AS: 65551
+  ID: 203.0.114.1
+  lo_iBGP: False
+  lo_eBGP: False
+  lo: lo
+
+  neighbors:
+  - ipv4: 172.16.2.1 # UP1
+    AS: 65541
+  - ipv4: 172.16.3.1 # UP2
+    AS: 65542
+  
+  networks:
+  - prefix: 203.0.113.0
+    mask: 255.255.255.128
+  - prefix: 203.0.113.128
+    mask: 255.255.255.128

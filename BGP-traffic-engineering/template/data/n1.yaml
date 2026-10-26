@@ -1,0 +1,19 @@
+config_filename: n1.sh
+
+name: n1
+hostname: n1
+username: admin
+password: False
+
+type: alpine
+
+routing_enabled: True
+
+interfaces:
+- name: eth1
+  ipv4: 192.0.2.10/24
+
+
+ipv4_routes:
+- destination: 0.0.0.0/0
+  next_hop: 192.0.2.1

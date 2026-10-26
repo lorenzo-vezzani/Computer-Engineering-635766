@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BallZone — Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/general.css}" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="mouse-dot"></div>
+<script th:src="@{/js/custom_pointer.js}" type="text/javascript"></script>
+
+<div id="login-screen" class="main-box">
+    <div class="panel">
+        <div class="logo">BallZone</div>
+        <div class="subtitle">BallZone Battle Royale</div>
+
+        <form th:action="@{/auth/login}" method="post">
+            <div class="field">
+                <label class="field-label" for="username"><span class="marker">▸</span>Username</label>
+                <input class="field-input" type="text" id="username" name="username" placeholder="alice" autocomplete="off" required>
+            </div>
+
+            <div class="field">
+                <label class="field-label" for="password"><span class="marker">▸</span>Password</label>
+                <input class="field-input" type="password" id="password" name="password" placeholder="••••••" autocomplete="off" required>
+            </div>
+
+            <button class="connect-btn" type="submit">▶ Connect</button>
+
+            <div class="page-link">
+                <a th:href="@{/signup}">Create account</a>
+            </div>
+        </form>
+
+        <!-- ERROR & LOGOUT MESSAGES -->
+        <div class="error-box" th:classappend="${param.error} ? ' visible'"
+             th:text="${param.error} ? 'Error: wrong username or password' : ''"></div>
+        <div class="error-box" th:classappend="${param.logout} ? ' visible'"
+             th:text="${param.logout} ? 'Logout successful' : ''"></div>
+        <div class="error-box"
+             th:classappend="${param.signupSuccess} ? ' visible'"
+             th:text="${param.signupSuccess} ? 'Signup successful, please log in' : ''"
+             style="border-color: rgba(0,255,136,0.35); background: rgba(0,255,136,0.06); color: #00ff88;">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

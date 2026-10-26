@@ -1,0 +1,29 @@
+App ID                        : application_1750083254881_0170
+Execution Time                : 423.082 seconds
+Total tasks launched          : 110
+Tasks completed               : 110
+Total tasks duration          : 785.143 seconds
+Physical Memory Snapshot      : 6614.84 MB
+Virtual Memory Snapshot       : 16178.94 MB
+Driver CPU time               : 1.920 seconds
+Total CPU time                : 51.691 seconds
+Total GC time                 : 7.342 seconds
+Driver RSS memory             : 55.25 MB
+Executor Memory used          : 0.08 MB
+Executor Max Memory           : 3283.50 MB
+Total Peak execution memory   : 0.00 MB
+  - On heap                   : 0.00 MB
+  - Off heap                  : 0.00 MB
+Total Peak Stage memory       : 0.00 MB
+Peak Stage Memory             : 0.00 MB
+Disk used for RDD             : 0.00 MB
+Driver disk read              : 140248.57 MB
+Driver disk write             : 348055.17 MB
+HDFS read                     : 1582.55 MB
+HDFS written                  : 1365.78 MB
+Shuffle read                  : 1874.03 MB
+Shuffle write                 : 1874.03 MB
+Memory Spilled                : 559.00 MB
+Disk Spilled                  : 177.54 MB
+RDD blocks cached             : 0
+Aggregate Resource Allocation : 3520454 MB-seconds

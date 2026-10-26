@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Startup-config
+
+echo "{{ hostname }}" > /etc/hostname
+hostname {{hostname}}
+
+# === Interfaces ===
+{% if interfaces -%}
+{% for int in interfaces -%}
+ip link set {{ int.name }} up
+{% if int.ipv4 -%}
+ip addr add {{ int.ipv4 }} dev {{ int.name }}
+{% endif -%}
+{% endfor -%}
+{% endif %}
+
+
+{% if ipv4_routes -%}
+# === Static routing ===
+# Add static entries
+{% for route in ipv4_routes -%}
+ip route replace {{ route.destination }} via {{ route.next_hop }}
+{% endfor -%}
+{% endif %}
+
+{% if python -%}
+# === Python file ===
+# Nohup to let it run in background
+# Redirect output to log file
+# -u for unbuffered output
+nohup python3 -u {{python.file}} > {{python.log}} 2>&1 &
+
+# Messages
+{% for msg in python.msgs -%}
+echo {{msg}}
+{% endfor -%}
+{% endif %}
+
+echo "Alpine: {{hostname}} is up and running"

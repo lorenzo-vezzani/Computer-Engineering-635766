@@ -1,0 +1,14 @@
+# Ignore all subfolders inside datasets
+datasets/*
+
+# Ignore checkpoints
+notebooks/.ipynb_checkpoints/
+
+# Ignore all models
+models/yolov11/
+
+# Ignore dataset samples
+notebooks/datasets_samples/
+
+# Venv
+.venv/

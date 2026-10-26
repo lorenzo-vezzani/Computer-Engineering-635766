@@ -1,0 +1,18 @@
+config_filename: n4.sh
+
+name: n4
+hostname: n4
+username: admin
+password: False
+
+type: alpine
+
+routing_enabled: True
+
+interfaces:
+- name: eth1
+  ipv4: 203.0.113.138/25
+
+ipv4_routes:
+- destination: 0.0.0.0/0
+  next_hop: 203.0.113.129

@@ -1,0 +1,78 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Aims and scope of the documentation}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Project description}{5}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Objectives}{5}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Environment}{6}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Code repository}{6}{section.1.5}%
+\contentsline {chapter}{\numberline {2}Network structure}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Network overview}{7}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Base network}{7}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Developed network}{7}{subsection.2.1.2}%
+\contentsline {subsubsection}{Management network}{8}{section*.4}%
+\contentsline {paragraph}{Management addresses}{8}{section*.5}%
+\contentsline {paragraph}{Management VRF}{8}{section*.6}%
+\contentsline {section}{\numberline {2.2}Node images}{10}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}FRR nodes}{10}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Alpine nodes}{10}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Manager node}{11}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Network details}{11}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Customer side}{11}{subsection.2.3.1}%
+\contentsline {subsubsection}{Customer 1 addresses}{11}{section*.8}%
+\contentsline {subsubsection}{Customer 2 addresses}{12}{section*.10}%
+\contentsline {subsection}{\numberline {2.3.2}Core part}{12}{subsection.2.3.2}%
+\contentsline {subsubsection}{Core addresses}{13}{section*.13}%
+\contentsline {paragraph}{PE1}{13}{section*.14}%
+\contentsline {paragraph}{PE2}{14}{section*.15}%
+\contentsline {paragraph}{GW1}{14}{section*.16}%
+\contentsline {paragraph}{GW2}{14}{section*.17}%
+\contentsline {subsection}{\numberline {2.3.3}Upstream side}{14}{subsection.2.3.3}%
+\contentsline {paragraph}{Upstreams}{15}{section*.19}%
+\contentsline {paragraph}{Internet}{16}{section*.20}%
+\contentsline {chapter}{\numberline {3}Implementation}{17}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Containerlab topology file}{17}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Node types}{17}{subsection.3.1.1}%
+\contentsline {subsubsection}{FRR node}{18}{section*.21}%
+\contentsline {subsubsection}{Alpine node}{18}{section*.22}%
+\contentsline {subsubsection}{Alpine-Python node}{19}{section*.23}%
+\contentsline {section}{\numberline {3.2}Node configurations}{19}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}FRR nodes}{19}{subsection.3.2.1}%
+\contentsline {paragraph}{OSPF}{20}{section*.24}%
+\contentsline {paragraph}{BGP}{20}{section*.25}%
+\contentsline {subsection}{\numberline {3.2.2}Alpine nodes}{20}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Templates}{20}{section.3.3}%
+\contentsline {paragraph}{Complete automation}{22}{section*.27}%
+\contentsline {subsection}{\numberline {3.3.1}FRR template}{22}{subsection.3.3.1}%
+\contentsline {subsubsection}{Interfaces}{22}{section*.28}%
+\contentsline {subsubsection}{OSPF}{23}{section*.29}%
+\contentsline {subsubsection}{BGP}{24}{section*.30}%
+\contentsline {subsection}{\numberline {3.3.2}Alpine template}{27}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Network automation}{28}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Load balancing algorithm}{29}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Local Preference Setting}{30}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Filtering method setting}{31}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}BGP Clearing}{31}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.5}Route Maps Clearing}{32}{subsection.3.4.5}%
+\contentsline {chapter}{\numberline {4}Testing}{33}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Network deploy}{33}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Nodes configuration}{33}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Automation testing}{37}{section.4.3}%
+\contentsline {paragraph}{Network Legend}{37}{section*.42}%
+\contentsline {subsubsection}{Traffic Matrix 1}{38}{section*.43}%
+\contentsline {subsubsection}{Traffic Matrix 2}{38}{section*.45}%
+\contentsline {subsubsection}{Matrix 1 Buckets}{38}{section*.47}%
+\contentsline {subsubsection}{Matrix 2 Buckets}{38}{section*.48}%
+\contentsline {subsection}{\numberline {4.3.1}Resulting tables}{39}{subsection.4.3.1}%
+\contentsline {subsubsection}{Matrix 1 - resulting tables}{39}{section*.49}%
+\contentsline {subsubsection}{Matrix 2 - resulting tables}{41}{section*.54}%
+\contentsline {subsection}{\numberline {4.3.2}Traceroute examples}{42}{subsection.4.3.2}%
+\contentsline {subsubsection}{n1 to n3}{43}{section*.59}%
+\contentsline {subsubsection}{n2 to n4}{43}{section*.61}%
+\contentsline {subsubsection}{n3 to n1}{44}{section*.63}%
+\contentsline {subsubsection}{n4 to n2}{44}{section*.65}%
+\contentsline {chapter}{\numberline {5}Conclusion}{45}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Results}{45}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future work}{45}{section.5.2}%
+\contentsline {paragraph}{Route maps}{45}{section*.67}%
+\contentsline {paragraph}{BGP limitations}{45}{section*.68}%
+\contentsline {paragraph}{Expansion}{46}{section*.69}%

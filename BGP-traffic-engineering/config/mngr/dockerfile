@@ -1,0 +1,22 @@
+# from alpine distro containing python3
+FROM python:3.12-alpine
+
+# retrieve pika package
+RUN apk add --no-cache \
+    python3-dev \
+    py3-pip \
+    build-base \
+    libffi-dev \
+    openssl-dev \
+    openssh-client \
+    iproute2 \
+    openssh
+    
+# setup ssh
+RUN ssh-keygen -A && \
+    echo 'root:admin' | chpasswd && \
+    sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# install pika
+RUN pip install --no-cache-dir paramiko

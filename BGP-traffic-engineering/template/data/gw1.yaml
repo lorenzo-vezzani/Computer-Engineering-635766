@@ -1,0 +1,50 @@
+config_filename: GW1.conf
+
+name: GW1
+hostname: GW1
+username: admin
+password: False
+
+routing_enabled: True
+
+interfaces:
+- name: lo
+  ipv4: 192.168.100.21/32
+  switchport: False
+  description: LOOPBACK
+
+- name: eth0
+  description: MANAGEMENT
+
+- name: eth1
+  ipv4: 192.168.0.3/29
+  switchport: False
+  description: to_CORE
+
+- name: eth2
+  ipv4: 172.16.0.1/30
+  switchport: False
+  description: to_UP1
+
+ospf:
+  router_id: 192.168.100.21
+  passive_interfaces: [lo, eth0, eth2]
+  networks:
+  - network: 192.168.0.0/29
+    area: 0
+  - network: 192.168.100.21/32
+    area: 0
+
+bgp:
+  AS: 65020
+  ID: 192.168.100.21
+  lo_iBGP: True
+  lo_eBGP: False
+  lo: lo
+
+  neighbors:
+  - ipv4: 172.16.0.2 # UP1
+    AS: 65541
+  - ipv4: 192.168.100.11
+  - ipv4: 192.168.100.12
+  - ipv4: 192.168.100.22

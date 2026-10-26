@@ -1,0 +1,50 @@
+config_filename: GW2.conf
+
+name: GW2
+hostname: GW2
+username: admin
+password: False
+
+routing_enabled: True
+
+interfaces:
+- name: lo
+  ipv4: 192.168.100.22/32
+  switchport: False
+  description: LOOPBACK
+
+- name: eth0
+  description: MANAGEMENT
+
+- name: eth1
+  ipv4: 192.168.0.4/29
+  switchport: False
+  description: to_CORE
+
+- name: eth2
+  ipv4: 172.16.1.1/30
+  switchport: False
+  description: to_UP2
+
+ospf:
+  router_id: 192.168.100.22
+  passive_interfaces: [lo, eth0, eth2]
+  networks:
+  - network: 192.168.0.0/29
+    area: 0
+  - network: 192.168.100.22/32
+    area: 0
+
+bgp:
+  AS: 65020
+  ID: 192.168.100.22
+  lo_iBGP: True
+  lo_eBGP: False
+  lo: lo
+
+  neighbors:
+  - ipv4: 172.16.1.2 # UP1
+    AS: 65542
+  - ipv4: 192.168.100.11
+  - ipv4: 192.168.100.12
+  - ipv4: 192.168.100.21

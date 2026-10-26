@@ -1,0 +1,1452 @@
+\documentclass{report}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{titling} 
+\usepackage{chngcntr}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[style=authoryear]{biblatex}
+\usepackage{url}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\hypersetup{
+    breaklinks=true,  % Spezza gli URL su più righe
+}
+\lstset{
+    inputencoding=utf8,
+    extendedchars=true,
+    showstringspaces=false
+}
+\setlength{\parindent}{0pt}
+
+\definecolor{color_cyan}{rgb}{0.13, 0.44, 0.5}
+\definecolor{color_orange}{rgb}{1, 0.5, 0.08}
+\definecolor{color_dark_pink}{rgb}{0.7, 0, 0.15}
+\definecolor{color_pink}{rgb}{1, 0.4, 0.6}
+\definecolor{color_brown}{rgb}{0.7, 0.4, 0}
+\definecolor{color_green}{rgb}{0, 0.6, 0}
+\definecolor{color_background}{rgb}{0.96, 0.96, 0.96}
+
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{red}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstdefinelanguage{GDB}{
+    morekeywords={set, add-symbol-file, source, target, break, continue, delete, file, context},
+    sensitive=true,
+    morecomment=[l]{\#},
+    morestring=[b]",
+}
+
+\lstdefinestyle{baseStyle}{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true, 
+    numbers=left,
+    stepnumber=1,             
+    captionpos=b,
+    frame=single,
+    framerule=0pt,
+    framesep=5pt,  
+}
+\lstdefinestyle{stylePython}{
+    style=baseStyle,
+    commentstyle=\color{color_green},
+    keywordstyle=\color{color_orange},
+    stringstyle=\color{color_brown},
+    backgroundcolor=\color{color_background},
+}
+\lstdefinestyle{styleShell}{
+    style=baseStyle,
+    keywordstyle=\color{color_cyan}\bfseries,
+    commentstyle=\color{color_green},
+    backgroundcolor=\color{color_background},
+}
+\lstdefinestyle{styleJson}{
+  style=baseStyle,
+  backgroundcolor=\color{color_background},
+  literate=
+   *{0}{{\textcolor{orange}{0}}}{1}
+    {1}{{\textcolor{orange}{1}}}{1}
+    {2}{{\textcolor{orange}{2}}}{1}
+    {3}{{\textcolor{orange}{3}}}{1}
+    {4}{{\textcolor{orange}{4}}}{1}
+    {5}{{\textcolor{orange}{5}}}{1}
+    {6}{{\textcolor{orange}{6}}}{1}
+    {7}{{\textcolor{orange}{7}}}{1}
+    {8}{{\textcolor{orange}{8}}}{1}
+    {9}{{\textcolor{orange}{9}}}{1}
+    {.}{{\textcolor{orange}{.}}}{1}
+    {/}{{\textcolor{orange}{/}}}{1}
+}
+
+\lstdefinelanguage{json}{
+  string=[s]{"}{"},
+  stringstyle=\color{color_cyan},
+  comment=[l]{//},
+  commentstyle=\color{color_green},
+  morecomment=[s]{/*}{*/},
+  keywords={true,false,null},
+  keywordstyle=\color{blue},
+}
+
+\lstdefinestyle{styleYml}{
+    style=baseStyle,
+    keywordstyle=\color{color_cyan},
+    morekeywords={topology,groups,kind,image,binds,exec,nodes,links,env,},   
+    stringstyle=\color{color_cyan},
+    commentstyle=\color{color_green},
+    backgroundcolor=\color{color_background},
+    comment=[l]{\#}
+}      
+\lstdefinestyle{styleJinja}{
+    style=baseStyle,
+    keywordstyle=\color{color_dark_pink},
+    morekeywords={for,endfor,in,if,endif},   
+    stringstyle=\color{color_cyan},
+    commentstyle=\color{color_green},
+    backgroundcolor=\color{color_background},
+    comment=[l]{\{\#}
+}
+\lstdefinestyle{styleConf}{
+    style=baseStyle,
+    backgroundcolor=\color{color_background},
+}    
+
+\counterwithin{figure}{chapter}
+
+% Comando per inserire una pagina nuova
+\newcommand{\emptypage}{
+    \newpage
+    \thispagestyle{empty}
+    \null
+} 
+
+\newcommand{\customelement}[1]{
+    \vspace{0.2cm}
+    \newline
+    \textbf{#1}
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+
+\usepackage{hyphenat}
+
+\newcommand{\monospaced}[1]{\texttt{\hyphenchar\font=`\-#1}}
+\newcommand{\monobold}[1]{\texttt{\textbf{#1}}}
+
+% crop per uno screenshot di tutto lo schermo sul Compaq
+\newcommand{\croppedimage}[1]{%
+  \includegraphics[trim=1.51cm 0.66cm 0 2.5cm, clip, width=1\textwidth]{#1}%
+}
+
+\definecolor{brightred}{rgb}{1.0, 0.0, 0.0} 
+\definecolor{darkred}{rgb}{0.7, 0.0, 0.0} 
+% Definizione del comando \todo
+\newcommand{\todo}[1]{%
+    \textbf{\textcolor{brightred}{[TODO]}} 
+    \textbf{\textcolor{darkred}{#1}}%
+    \newline
+}
+
+
+\title{Advaced Computer Networking - Group project}
+\author{Alessio Simoncini, Lorenzo Vezzani}
+
+
+% Header
+\pagestyle{fancy}
+\fancyhf{} % Clear all
+\fancyhead[L]{\rightmark} % header > destra: titolo della sezione corrente
+\fancyfoot[R]{\thepage} %  footer > destra: numero di pagina
+
+\addbibresource{bibliografia.bib} 
+\setlength{\bibitemsep}{1.5ex} 
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/cherubino_pant541.pdf}
+    \vspace{0.4cm}
+    
+    {\LARGE\textbf{UNIVERSITÀ DI PISA}\\}
+    \vspace{0.4cm}
+    \begin{spacing}{1.2}
+    {\Large DEPARTMENT OF INFORMATION ENGINEERING}
+    \end{spacing}
+    
+    \vspace{0.8cm}
+    
+    {\Large MSc in Computer Engineering}
+    
+    \vspace{1.6cm}
+    
+    \begin{minipage}{0.9\textwidth} % Riduce la larghezza del titolo
+        \centering
+        \setstretch{1.75} % Aumenta l'interlinea
+        {\huge\textbf{Advanced Computer Networking Project}}
+    \end{minipage}
+    
+    \vspace{2.5cm}
+    
+    {\large Alessio Simoncini, Lorenzo Vezzani}
+    
+    \vspace{3.5cm}
+    
+    {\large ACADEMIC YEAR 2025/2026}
+    
+\end{titlepage}
+
+% Pagina vuota
+\emptypage
+
+% Indice
+\tableofcontents
+
+% Pagina vuota
+\emptypage
+
+
+\chapter{Introduction}
+\section{Aims and scope of the documentation}
+This work has been developed as part of the \textit{Advanced Computer Networking} course project, academic year 2025/2026.
+\section{Project description}
+The project consists in the design and implementation of a network composed by a hierarchy of Autonomous Systems (AS). The purposes of the project are using templates for network provisioning, and the study of the BGP protocol, in particular eBGP, iBGP and the dynamic configuration of BGP attributes.
+\section{Objectives}
+Three main objectives are given in the project specifications:
+\begin{enumerate}
+    \item \textbf{Configuration templates} --- Develop reusable configuration templates for  all routers in the network using Jinja2 scripting. These templates should support parameterization for device-specific details such as AS numbers, router IDs and interface addresses and BGP neighbor relationships.
+    \item \textbf{Network emulation with Containerlab} --- Use Containerlab to instantiate the described network topology. Each router should be based on FRR, end nodes will be based on Alpine.
+    \item \textbf{Network Automation System for AS 65020} --- Design and implement a  network automation system that operates within a Manager node in AS65020, which should receive traffic prediction, determine optimal traffic distribution across upstream links and adjust BGP attributes influence inbound and outbound traffic paths.
+\end{enumerate}
+The basic structure of the network to emulate is shown and discussed in the following chapter.
+\section{Environment}
+As requested by project specification, the environment used for carrying out the network emulation is ContainerLab. Containerlab is an open-source tool used to create virtual networking labs based on container technology. It allows users to define network topologies through YAML files; network devices, including routers, switches, and hosts, are then emulated as containers.
+\section{Code repository}
+The code developed for the project can be found in the repository at: \newline \url{https://github.com/AlessioSmn/Network-Provisioning-Automation} .
+
+
+
+\chapter{Network structure}
+\section{Network overview}
+\subsection{Base network}
+The network is composed by a central AS (AS65020), which will be the focus of later tasks, two customer ASes, two upstream ASes and the Internet. The basic structure of the network to implement is represented in Figure~\ref{fig:network-base}:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/project-base.drawio.png}
+    \caption{Starting network}
+    \label{fig:network-base}
+\end{figure}
+
+\subsection{Developed network}
+The network developed for the project expands the base network by specifying the structure of the various networks: customer networks, the core network and the Internet. All aspects are described in detail, along with more precise images, in the following section.
+The structure of the implemented network is represent in Figure~\ref{fig:network}, along with interface names and addresses:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/project.jpg}
+    \caption{Starting network}
+    \label{fig:network}
+\end{figure}
+\subsubsection{Management network}
+When deploying the network, Containerlab, based on Docker, creates all nodes as containers and automatically configures a management interface (\monospaced{eth0}), assigns it an IP address, and installs a default route through that interface. To the best of our knowledge, there is no supported way to prevent the creation of this interface and its associated default route. For this reason, we decided to explicitly use it as the management interface.
+\paragraph{Management addresses}
+The management network prefix can be configured in the topology file, as shown in Listing \ref{lst:mgmt_net}:
+\begin{lstlisting}[style=styleYml, caption=Management network, label=lst:mgmt_net,
+    morekeywords={mgmt,network,ipv4-subnet}]
+mgmt:
+  network: acn_prj_mgmt              # name
+  ipv4-subnet: 10.255.255.0/24       # ipv4 range
+\end{lstlisting}
+By default, Docker assigns management IP addresses dynamically. However, fixed IP addresses can be explicitly specified for each node, as shown in Listing \ref{lst:mgmt_ip_example}. This configuration is particularly useful for debugging purposes, as it allows consistent addressing across multiple deployments.
+\begin{lstlisting}[style=styleYml, caption=Management IP address, label=lst:mgmt_ip_example,
+    morekeywords={PE1, group, mgmt-ipv4}]
+    PE1:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.111
+\end{lstlisting}
+\paragraph{Management VRF}
+Another possible source of problem is the default route towards the management interface, which is installed as a route of type \monospaced{kernel}, and thus cannot be removed.\newline
+To avoid unintended traffic being forwarded toward the management network, we configured the startup scripts of all nodes to optionally move the management interface into a dedicated and isolated VRF.
+To allow us to avoid that default route and consequent traffic towards the management network, we configured the startup files of all nodes to be able to move the management interface into a dedicated and separated VRF. If the environment variable \monospaced{CLAB\_MGMT\_VRF} is specified in the topology file, as represented in Listing \ref{lst:mgmt_vrf_topo},
+\begin{lstlisting}[style=styleYml, caption=Management VRF in acn.clab.yml, label=lst:mgmt_vrf_topo,
+    morekeywords={frr_nodes, CLAB_MGMT_VRF, CLAB_MGMT_GW}]
+topology:
+  groups:
+    frr_nodes: # applied to all nodes of the group
+      env: 
+        CLAB_MGMT_VRF: MGMT
+        CLAB_MGMT_GW: 10.255.255.1
+\end{lstlisting}
+the startup script receives this environment variable and, when defined, creates the management VRF, moves the \monospaced{eth0} interface into it and moves the default route, as represented in Listing \ref{lst:mgmt_vrf_shell}:
+\begin{lstlisting}[language=sh, style=styleShell, caption=Management VRF in .clab.yml, label=lst:mgmt_vrf_shell]
+# VRF Management (if specified)
+if [ -n "${CLAB_MGMT_VRF}" ]; then
+
+    # VRF creation
+    ip link add "${CLAB_MGMT_VRF}" type vrf table 100
+    ip link set "${CLAB_MGMT_VRF}" up
+
+    # Interface assigned to VRF
+    ip link set eth0 master "${CLAB_MGMT_VRF}"
+
+    # Default route moved
+    ip route add default via ${CLAB_MGMT_GW} vrf "${CLAB_MGMT_VRF}"
+fi
+\end{lstlisting}
+In the following table the management network IP addresses of each node are written down:
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c c|} 
+ \hline
+ Node & Address \\ [0.5ex] 
+ \hline \hline
+ CE1 & 10.255.255.101 \\
+ CE2 & 10.255.255.102 \\\hline
+ PE1 & 10.255.255.111 \\
+ PE2 & 10.255.255.112 \\ 
+ GW1 & 10.255.255.121 \\
+ GW2 & 10.255.255.122 \\\hline
+ UP1 & 10.255.255.131 \\
+ UP2 & 10.255.255.132 \\
+ INT & 10.255.255.141 \\\hline\hline
+ n1 & 10.255.255.201 \\
+ n2 & 10.255.255.202 \\
+ n3 & 10.255.255.203 \\
+ n4 & 10.255.255.204 \\
+ MNGR & 10.255.255.205 \\\hline
+\end{tabular}
+\label{tab:mgmt}
+\caption{Management IP addresses}
+\end{center}
+\end{table}
+
+\section{Node images}
+Three types of nodes are present in the network: \monobold{FRR} routers, \monobold{Alpine} hosts and a single \monobold{Manager} node. All nodes are based on a custom-built images in order to at least have the OpenSSH package: all nodes are configured to be accessible via SSH via their management IP address, by using:
+\begin{itemize}
+    \item username: \monobold{root}
+    \item password: \monobold{admin}
+\end{itemize}
+\subsection{FRR nodes}\label{sec:img_frr}
+Based on FRRouting image, or FRR, version \monospaced{10.4.1}. OpenSSH is added, username and password are set, and keys are generated. The final image is build by the \monospaced{/shell/images.sh} script and named \monobold{frr-ssh:10.4.1}. \newline The FRR dockerfile is found at \monospaced{./config/frr/dockerfile}.
+\subsection{Alpine nodes}\label{sec:img_alp}
+Based on an Alpine image, version \monospaced{3.19.1}. OpenSSH is added, username and password are set, and keys are generated. The final image is build by the \monospaced{/shell/images.sh} script and named \monobold{alpine-ssh:3.19.1}.\newline
+The Alpine dockerfile is found at \monospaced{./config/alpine/dockerfile}.
+\subsection{Manager node}\label{sec:img_pyt}
+Based on an Alpine image, version \monospaced{3.19.1}. Most importantly OpenSSH and Paramiko are added: username and password are set, and keys are generated to enable SSH access, while Paramiko is needed to be able to execute Python scripts on the node. The final image is build by the \monospaced{/shell/images.sh} script and named \monobold{python-ssh:3.12-alpine}.\newline
+The Manager dockerfile is found at \monospaced{./config/mngr/dockerfile}.
+
+
+\section{Network details}\label{sec:net_details}
+\subsection{Customer side}
+Each customer network in the base structure has been implemented with a simple point to point link between the Customer Edge router (CE1 / CE2) and the relative end host (n1 / n2).
+\subsubsection{Customer 1 addresses}
+The customer 1 network has been given the \textbf{ASN 64501}. \newline
+The customer 1 part of the network is shown in detail in Figure~\ref{fig:network-CE1}:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/acn_details_CE1.jpg}
+    \caption{Network - customer 1}
+    \label{fig:network-CE1}
+\end{figure}
+\begin{itemize}
+    \item \monospaced{CE1 loopback address}: 10.0.0.1/32 (lo)
+    \item \monospaced{n1 - CE1 P2P link}: 192.0.2.0/24
+    \begin{itemize}
+        \item \monospaced{n1}: 192.0.2.10 (eth1)
+        \item \monospaced{CE1}: 192.0.2.1 (eth1)
+    \end{itemize}
+    \item \monospaced{CE1 - PE1 P2P link}: 10.1.1.0/30
+    \begin{itemize}
+        \item \monospaced{CE1}: 10.1.1.1 (eth2)
+        \item \monospaced{PE1}: 10.1.1.2 (eth2)
+    \end{itemize}
+    \item \monospaced{CE1 - PE2 P2P link}: 10.1.2.0/30
+    \begin{itemize}
+        \item \monospaced{CE1}: 10.1.2.1 (eth3)
+        \item \monospaced{PE2}: 10.1.2.2 (eth3)
+    \end{itemize}
+\end{itemize}
+\subsubsection{Customer 2 addresses}
+The customer 2 network has been given the \textbf{ASN 64502}. \newline
+The customer 2 part of the network is shown in detail in Figure~\ref{fig:network-CE2}:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/acn_details_CE2.jpg}
+    \caption{Network - customer 2}
+    \label{fig:network-CE2}
+\end{figure}
+\begin{itemize}
+    \item \monospaced{CE2 loopback address}: 10.0.0.2/32 (lo)
+    \item \monospaced{n2 - CE2 P2P link}: 198.51.100.0/24
+    \begin{itemize}
+        \item \monospaced{n2}: 198.51.100.10 (eth1)
+        \item \monospaced{CE2}: 198.51.100.1 (eth1)
+    \end{itemize}
+    \item \monospaced{CE2 - PE1 P2P link}: 10.2.1.0/30
+    \begin{itemize}
+        \item \monospaced{CE2}: 10.2.1.1 (eth3)
+        \item \monospaced{PE1}: 10.2.1.2 (eth3)
+    \end{itemize}
+    \item \monospaced{CE2 - PE2 P2P link}: 10.2.2.0/30
+    \begin{itemize}
+        \item \monospaced{CE2}: 10.2.2.1 (eth2)
+        \item \monospaced{PE2}: 10.2.2.2 (eth2)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Core part}
+The core of the AS 65020 is implemented as a single LAN, using a switch called \monospaced{br-clab-core} in the topology file; the LAN IP prefix is \monospaced{192.168.0.0/29}.
+The central part of the network is shown in detail in Figure~\ref{fig:network-CORE}:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/acn_details_CORE.jpg}
+    \caption{Network - central part}
+    \label{fig:network-CORE}
+\end{figure}
+
+\subsubsection{Core addresses}
+\begin{itemize}
+    \item \monospaced{Core LAN}: 192.168.0.0/29
+    \begin{itemize}
+        \item \monospaced{PE1}: 192.168.0.1 (eth1)
+        \item \monospaced{PE2}: 192.168.0.2 (eth1)
+        \item \monospaced{GW1}: 192.168.0.3 (eth1)
+        \item \monospaced{GW2}: 192.168.0.4 (eth1)
+        \item \monospaced{MNGR}: 192.168.0.5 (eth1)
+    \end{itemize}
+\end{itemize}
+\paragraph{PE1}
+\begin{itemize}
+    \item \monospaced{PE1 loopback address}: 192.168.100.11/32 (lo)
+    \item \monospaced{CE1 - PE1 P2P link}: 10.1.1.0/30
+    \begin{itemize}
+        \item \monospaced{CE1}: 10.1.1.1 (eth2)
+        \item \monospaced{PE1}: 10.1.1.2 (eth2)
+    \end{itemize}
+    \item \monospaced{CE2 - PE1 P2P link}: 10.2.1.0/30
+    \begin{itemize}
+        \item \monospaced{CE2}: 10.2.1.1 (eth3)
+        \item \monospaced{PE1}: 10.2.1.2 (eth3)
+    \end{itemize}
+\end{itemize}
+\paragraph{PE2}
+\begin{itemize}
+    \item \monospaced{PE2 loopback address}: 192.168.100.12/32 (lo)
+    \item \monospaced{CE1 - PE2 P2P link}: 10.1.1.0/30
+    \begin{itemize}
+        \item \monospaced{CE1}: 10.1.2.1 (eth3)
+        \item \monospaced{PE2}: 10.1.2.2 (eth3)
+    \end{itemize}
+    \item \monospaced{CE2 - PE2 P2P link}: 10.2.1.0/30
+    \begin{itemize}
+        \item \monospaced{CE2}: 10.2.2.1 (eth2)
+        \item \monospaced{PE2}: 10.2.2.2 (eth2)
+    \end{itemize}
+\end{itemize}
+\paragraph{GW1}
+\begin{itemize}
+    \item \monospaced{GW1 loopback address}: 192.168.100.21/32 (lo)
+    \item \monospaced{GW1 - UP1 P2P link}: 172.16.0.0/30
+    \begin{itemize}
+        \item \monospaced{GW1}: 172.16.0.1 (eth2)
+        \item \monospaced{UP1}: 172.16.0.2 (eth2)
+    \end{itemize}
+\end{itemize}
+\paragraph{GW2}
+\begin{itemize}
+    \item \monospaced{GW2 loopback address}: 192.168.100.21/32 (lo)
+    \item \monospaced{GW2 - UP2 P2P link}: 172.16.1.0/30
+    \begin{itemize}
+        \item \monospaced{GW2}: 172.16.1.1 (eth2)
+        \item \monospaced{UP2}: 172.16.1.2 (eth2)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Upstream side}
+The internet network represented in the base network is implemented via a router, called \monospaced{INT}, connected to both upstream routers and then connected to two hosts (n3 and n4): these addiotional networks and hosts have been created to be able to properly test load balancing on upstream links, by having many possible destination networks.\newline
+The upstream 1 network (router) has been given the \textbf{ASN 65541};
+The upstream 2 network (router) has been given the \textbf{ASN 65542};
+The Internet networks have been given the \textbf{ASN 65551}.\newline
+The upstream side of the network is shown in detail in Figure~\ref{fig:network-INT}:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/acn_details_INT.jpg}
+    \caption{Network - upstream side}
+    \label{fig:network-INT}
+\end{figure}
+\paragraph{Upstreams}
+\begin{itemize}
+    \item \monospaced{UP1 loopback address}: 172.31.0.1/32 (lo)
+    \item \monospaced{UP2 loopback address}: 172.31.0.2/32 (lo)
+    \item \monospaced{GW1 - UP1 P2P link}: 172.16.0.0/30
+    \begin{itemize}
+        \item \monospaced{GW1}: 172.16.0.1 (eth2)
+        \item \monospaced{UP1}: 172.16.0.2 (eth2)
+    \end{itemize}
+    \item \monospaced{GW2 - UP2 P2P link}: 172.16.1.0/30
+    \begin{itemize}
+        \item \monospaced{GW2}: 172.16.1.1 (eth2)
+        \item \monospaced{UP2}: 172.16.1.2 (eth2)
+    \end{itemize}
+    \item \monospaced{UP1 - INT P2P link}: 172.16.2.0/30
+    \begin{itemize}
+        \item \monospaced{UP1}: 172.16.2.1 (eth1)
+        \item \monospaced{INT}: 172.16.2.2 (eth1)
+    \end{itemize}
+    \item \monospaced{UP2 - INT P2P link}: 172.16.3.0/30
+    \begin{itemize}
+        \item \monospaced{UP2}: 172.16.3.1 (eth1)
+        \item \monospaced{INT}: 172.16.3.2 (eth2)
+    \end{itemize}
+\end{itemize}
+\paragraph{Internet}
+\begin{itemize}
+    \item \monospaced{INT loopback address}: 203.0.114.1/32 (lo)
+    \item \monospaced{INT - n3 P2P link}: 203.0.113.0/25
+    \begin{itemize}
+        \item \monospaced{INT}: 203.0.113.1 (eth3)
+        \item \monospaced{n3}: 203.0.113.10 (eth1)
+    \end{itemize}
+    \item \monospaced{INT - n4 P2P link}: 203.0.113.128/25
+    \begin{itemize}
+        \item \monospaced{INT}: 203.0.113.129 (eth4)
+        \item \monospaced{n4}: 203.0.113.138 (eth1)
+    \end{itemize}
+\end{itemize}
+
+
+\chapter{Implementation}
+\section{Containerlab topology file}
+The topology file is named \monospaced{acn.clab.yml}, and it's located in the root of the project directory (\monospaced{./acn.clab.yml}).
+\begin{lstlisting}[style=styleYml, caption=acn.clab.yml structure, label=lst:yml_all]
+topology:
+  
+  groups:
+    frr_nodes:
+      # ...
+    alp_nodes:
+      # ...
+    pyt_nodes:
+      # ...
+    bridges:
+      kind: bridge
+      
+  nodes:
+    # All previously described nodes
+    # ...
+    PE1:
+      group: frr_nodes
+      mgmt-ipv4: 10.255.255.111
+    # ...
+    
+  links:
+    # List of all links
+\end{lstlisting}
+The list of links present in the topology file implements the connections described in section \ref{sec:net_details}.
+\subsection{Node types}
+To implement the three types of nodes discussed in previous sections (FRR, Alpine and Alpine-Python) three node types have been defined in the network topology: the keyword \monobold{groups} allows us to define a set of attributes to then be applied to any number of nodes, thus avoiding having to repeat the same exact configuration for each node. This is used in conjunction with the keyword \monospaced{\_\_clabNodeName\_\_}, that is substituted at compile-time with the actual node name (CE1, PE1, etc.).\newline
+\subsubsection{FRR node} 
+The node is based on the image \monospaced{frr-ssh:10.4.1}, discussed in section ~\ref{sec:img_frr}. Some file are needed for an FRR node: 
+\begin{itemize}
+    \item \monospaced{frr.conf} --- Startup configuration file
+    \item \monospaced{daemons} --- Daemon file, used at startup to setup particular daemons (bgpd, ospfd among others)
+    \item \monospaced{vtysh.conf} --- To enable vtysh
+    \item \monospaced{frr-cfg.sh} --- To start the main FRR process, start SSH and possibly setup the management VRF
+\end{itemize}
+The node configuration within the topology file is represented in Listing \ref{lst:yml_frr}:
+\begin{lstlisting}[style=styleYml, caption=FRR node definition, label=lst:yml_frr]
+    frr_nodes:
+      env:
+        CLAB_MGMT_VRF: MGMT
+        CLAB_MGMT_GW: 10.255.255.1
+      kind: linux
+      image: frr-ssh:10.4.1
+      binds:
+        - ./config/startup/__clabNodeName__.conf:/etc/frr/frr.conf
+        - ./config/frr/daemons:/etc/frr/daemons
+        - ./config/frr/vtysh.conf:/etc/frr/vtysh.conf
+        - ./config/frr/frr-cfg.sh:/frr-cfg.sh
+      exec:
+        - bash /frr-cfg.sh
+\end{lstlisting}
+\subsubsection{Alpine node} 
+The node is based on the image \monospaced{alpine-ssh:3.19.1}, discussed in section~\ref{sec:img_alp}. Some file are needed for an Alpine node: 
+\begin{itemize}
+    \item \monospaced{conf.sh} --- Startup configuration file
+    \item \monospaced{alp-cfg.sh} --- Start SSH and possibly setup the management VRF
+\end{itemize}
+The node configuration within the topology file is represented in Listing \ref{lst:yml_alp}:
+\begin{lstlisting}[style=styleYml, caption=Alpine node definition, label=lst:yml_alp]
+    alp_nodes:
+      kind: linux
+      image: alpine-ssh:3.19.1
+      binds:
+        - ./config/alpine/alp-cfg.sh:/alp-cfg.sh
+        - ./config/startup/__clabNodeName__.sh:/conf.sh
+      exec:
+        - sh /alp-cfg.sh
+\end{lstlisting}
+\subsubsection{Alpine-Python node}
+The node is based on the image \monospaced{python-ssh:3.12-alpine}, discussed in section~\ref{sec:img_pyt}. Some file are needed for the manager node: 
+\begin{itemize}
+    \item \monospaced{conf.sh} --- Startup configuration file
+    \item \monospaced{alp-cfg.sh} --- Start SSH and possibly setup the management VRF
+    \item \monospaced{main.py} --- Python file which implements the functionalities required in Task 3.
+    \item \monospaced{traffic-matrices.json} --- Traffic matrix
+\end{itemize}
+The node configuration within the topology file is represented in Listing \ref{lst:yml_mngr}:
+\begin{lstlisting}[style=styleYml, caption=Manager node definition, label=lst:yml_mngr]
+    pyt_nodes:
+      kind: linux
+      image: python-ssh:3.12-alpine
+      binds:
+        - ./config/alpine/alp-cfg.sh:/alp-cfg.sh
+        - ./config/startup/__clabNodeName__.sh:/conf.sh
+        - ./config/mngr/main.py:/main.py
+        - ./config/mngr/traffic-matrices.json:/traffic-matrices.json
+      exec:
+        - sh /alp-cfg.sh
+\end{lstlisting}
+
+
+\section{Node configurations}
+\subsection{FRR nodes}
+All FRR nodes interfaces have been configured as previously described in sections under \ref{sec:net_details}.
+\paragraph{OSPF} The Open Shortest Path First (OSPF) routing protocol has been configured in the central AS (AS 65020): this has been done in order to have all nodes share their loopback addresses with each other, which in turn is needed for establishing \textbf{iBGP} sessions using loopback interfaces.\newline
+OSPF is configured in single-area mode. Each router (PE1, PE2, GW1, GW2) participates in the core network and advertises its loopback interface, which is configured as a passive interface.
+\paragraph{BGP}
+All routers have been configured with BGP; For \monospaced{router-id} the loopback addresses have been used. For the BGP speakers of the AS 65020 a full-mesh topology has been setup. All the BGP relations are represented in the following table: 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c c c c c|} 
+ \hline
+ Type & Node 1 & Node 1 int. & Node 2 & Node 2 int. \\ [0.5ex] 
+ \hline
+ \hline
+ eBGP & CE1 & 10.1.1.1 & PE1 & 10.1.1.2 \\
+ eBGP & CE1 & 10.1.2.1 & PE2 & 10.1.2.2 \\
+ eBGP & CE2 & 10.2.1.1 & PE1 & 10.2.1.2 \\
+ eBGP & CE2 & 10.2.2.1 & PE2 & 10.2.2.2 \\\hline
+ iBGP & PE1 & 192.168.100.11 & PE2 & 192.168.100.12 \\
+ iBGP & PE1 & 192.168.100.11 & GW1 & 192.168.100.21 \\
+ iBGP & PE1 & 192.168.100.11 & GW2 & 192.168.100.22 \\
+ iBGP & PE2 & 192.168.100.12 & GW1 & 192.168.100.21 \\
+ iBGP & PE2 & 192.168.100.12 & GW2 & 192.168.100.22 \\
+ iBGP & GW1 & 192.168.100.21 & GW2 & 192.168.100.22 \\\hline
+ eBGP & GW1 & 172.16.0.1 & UP1 & 172.16.0.2 \\
+ eBGP & GW2 & 172.16.1.1 & UP2 & 172.16.1.2 \\
+ eBGP & UP1 & 172.16.2.1 & INT & 172.16.2.2 \\
+ eBGP & UP2 & 172.16.3.1 & INT & 172.16.3.2 \\\hline
+\end{tabular}
+\label{tab:bgp}
+\caption{BGP relations}
+\end{center}
+\end{table}
+
+\subsection{Alpine nodes}
+All Alpine nodes interfaces have been configured as previously described in sections under \ref{sec:net_details}. The only additional configuration consists of a default route on the customer hosts (n1, n2, n3 and n4), directed toward their respective routers (CE1, CE2 and INT), which consequently operate as default gateways.
+
+\section{Templates}
+As required by Task 1 of the project specification, all configuration files are generated with templates. Due to the presence of different node types, each characterized by a different configuration syntax, two distinct templates have been defined: one for FRR-based routers and one for Alpine nodes.\newline
+The configuration generation process is based on a single Python script responsible for rendering the templates using the provided input data. The configuration data are stored in the directory \monospaced{./template/data/*.yaml}, where each file is named according to the corresponding node (i.e., \monospaced{<node-name>.yaml}).
+Each data file explicitly specifies the template to be used through the field:
+\begin{lstlisting}[style=styleYml]
+type: frr | alpine
+\end{lstlisting}
+During execution, the Python script reads this field and automatically selects the appropriate template file, rendering it with the associated data to generate the final device configuration. The content of the Python script (\monospaced{./template/generator.py}) is shown in Listing \ref{lst:generator}
+
+\begin{lstlisting}[language=Python, style=stylePython, caption=Template processing, label=lst:generator]      
+TEMPLATE_FRR = 'template_frr.j2'
+TEMPLATE_ALP = 'template_alp.j2'
+BASE_DIR = Path(__file__).resolve().parent
+
+# === Load data
+data_filename = sys.argv[1]
+with open(data_filename) as file:
+    data = yaml.safe_load(file)
+
+# Default type: FRR
+cont_type = 'FRR' 
+if 'type' in data:
+    if data['type'].lower() == 'alpine':
+        cont_type = 'alpine'
+
+# === Load template
+environment = Environment(
+    loader=FileSystemLoader(str(BASE_DIR)),
+    trim_blocks=True,
+    lstrip_blocks=True
+)
+template = None
+if cont_type == 'FRR':
+    template = environment.get_template(TEMPLATE_FRR)
+elif cont_type == 'alpine':
+    template = environment.get_template(TEMPLATE_ALP)
+    
+# === Generate content
+content = template.render(data)
+
+# === Print and save to file
+
+output_dir = BASE_DIR / ".." / "config" / "startup"
+output_dir = output_dir.resolve()
+
+config_filename = data['config_filename']
+output_path = output_dir / config_filename
+output_dir.mkdir(parents=True, exist_ok=True)
+
+with open(output_path, "w") as f:
+    f.write(content)
+\end{lstlisting}
+Note that some checks and debug lines have been omitted from this Listing. 
+\paragraph{Complete automation} the previously described process creates the configuration file for a given node: this process is easily repeated on all nodes via a simple shell script (\monospaced{./shell/template.sh}), as represented in Listing \ref{lst:template_shell}:
+\begin{lstlisting}[language=sh, style=styleShell, caption=template.sh file, label=lst:template_shell]      
+# Generate startup-config files
+for file in template/data/*.yaml; do
+    python3 template/generator.py "$file"
+    echo "$file" processed
+done
+\end{lstlisting}
+
+The FRR template is discussed in the following three subsections (\textit{\nameref{sec:template_frr_int}, \nameref{sec:template_frr_ospf}, \nameref{sec:template_frr_bgp}}), while the Alpine template is discussed in the last subsection (\textit{\nameref{sec:template_alpine}}).
+\subsection{FRR template}
+\subsubsection{Interfaces}\label{sec:template_frr_int}
+The template section dealing with interfaces loops over a list of interfaces, which must be called \monospaced{interfaces}, and for each interface sets:
+\begin{itemize}
+    \item IP address --- field \monospaced{ipv4}
+    \item description --- field \monospaced{description}
+    \item working layer --- field \monospaced{switchport} set to \monospaced{False} for L3, set to \monospaced{True} for L2
+\end{itemize}
+and finally activates it. The part of the template dealing with interfaces is represent in Listing \ref{lst:template_int}:
+\begin{lstlisting}[style=styleJinja, caption=FRR template - interfaces, label=lst:template_int]      
+{# ===Interfaces === -#}
+{% if interfaces -%}
+{% for int in interfaces -%}
+interface {{int.name}}
+    {% if int.ipv4 %}
+    ip address {{int.ipv4}}
+    {% endif -%}
+    {% if int.description %}
+    description {{int.description}}
+    {% endif %}
+    {% if int.switchport == False %}
+    no switchport
+    {% endif -%}
+    no shutdown
+!
+{% endfor -%}
+{% endif -%}
+\end{lstlisting}
+An example of a parameters file to be passed, compliant with the previously described part of template, is represented in the following Listing \ref{lst:template_int_data}:
+\begin{lstlisting}[style=styleYml, caption=Interfaces parameters, label=lst:template_int_data,,
+    morekeywords={interfaces,name,ipv4,switchport,description}]      
+interfaces:
+- name: lo
+  ipv4: 192.168.100.11/32
+  switchport: False
+  description: LOOPBACK
+- name: eth1
+  ipv4: 192.168.0.1/29
+  switchport: False
+  description: to_CORE
+\end{lstlisting}
+The resulting part of the .conf file is represented in the following Listing \ref{lst:template_int_conf}:
+\begin{lstlisting}[style=styleConf, caption=Configuration example, label=lst:template_int_conf]      
+interface lo
+    ip address 192.168.100.11/32
+    description LOOPBACK
+    no switchport
+    no shutdown
+!
+interface eth1
+    ip address 192.168.0.1/29
+    description to_CORE
+    no switchport
+    no shutdown
+!
+\end{lstlisting}
+
+\subsubsection{OSPF}\label{sec:template_frr_ospf}
+The template section dealing with OSPF firstly checks if there's a section dedicated to OSPF (field \monospaced{ospf}): if that field is not present OSPF is not configured.\newline
+If instead the \monospaced{ospf} field is present, the template configures the router-id (field \monospaced{router\_id}), then loops over a list of networks (field \monospaced{networks}) and configures the advertising of those network prefixes, along with their relative area.\newline
+Then the template loops over a list of passive interfaces (field \monospaced{passive\_interfaces}) and marks them as passive, with regard to OSPF.
+The part of the template dealing with OSPF is represented in Listing \ref{lst:template_ospf}:
+\begin{lstlisting}[style=styleJinja, caption=FRR template - OSPF, label=lst:template_ospf]
+{# === OSPF === -#}
+{% if ospf -%}
+router ospf
+    router-id {{ospf.router_id}}
+    {% for net in ospf.networks -%}
+    network {{net.network}} area {{net.area}}
+    {% endfor %}
+!
+{% for pi in ospf.passive_interfaces -%}
+interface {{pi}}
+    ip ospf passive
+{% endfor -%}
+{% endif -%}
+\end{lstlisting}
+An example of a parameters file to be passed, compliant with the previously described part of template, is represented in the following Listing \ref{lst:template_ospf_data}:
+\begin{lstlisting}[style=styleYml, caption=OSPF parameters, label=lst:template_ospf_data,
+    morekeywords={ospf, pid, router_id, passive_interfaces, networks, network, area}]
+ospf:
+  router_id: 192.168.100.11
+  passive_interfaces: [lo, eth0, eth2, eth3]
+  networks:
+  - network: 192.168.0.0/29
+    area: 0
+  - network: 192.168.100.11/32
+    area: 0
+\end{lstlisting}
+The resulting part of the .conf file is represented in the following Listing \ref{lst:template_ospf_conf}:
+\begin{lstlisting}[style=styleConf, caption=OSPF Configuration example, label=lst:template_ospf_conf]
+router ospf
+    router-id 192.168.100.11
+network 192.168.0.0/29 area 0
+network 192.168.100.11/32 area 0
+!
+interface lo
+    ip ospf passive
+interface eth0
+    ip ospf passive
+interface eth2
+    ip ospf passive
+interface eth3
+    ip ospf passive
+!
+\end{lstlisting}
+
+\subsubsection{BGP}\label{sec:template_frr_bgp}
+The template section dealing with BGP firstly checks if there's a section dedicated to BGP (field \monospaced{bgp}): if that field is not present BGP is not configured.\newline
+If instead the \monospaced{bgp} field is present, the template configures the router-id (field \monospaced{ID}), the current router's ASN (field \monospaced{AS}) and configures BGP to install ECMP routes among different AS paths of the same length, via the command \monospaced{bestpath as-path multipath-relax}.
+Also two other fields are needed for the neighbors configuration:
+\begin{itemize}
+    \item \monospaced{lo\_iBGP} --- indicates whether to use the loopback interface for iBGP sessions
+    \item \monospaced{lo\_eBGP} --- indicates whether to use the loopback interface for eBGP sessions
+    \item \monospaced{lo} --- the loopback interface name
+\end{itemize}
+The template loops over a list of BGP neighbors (field \monospaced{neighbors}) and for each one configures:
+\begin{itemize}
+    \item Neighbor IP address --- field neighbor.\monospaced{ipv4}
+    \item Neighbor ASN --- if the field neighbor.\monospaced{AS} is present, that value is used; otherwise it is intended as a \textbf{i}BGP session, thus setting the remote-as field to the same ASN as the current router.
+    \item Interface used --- if the loopback interface must be used for the current neighbor it is set with the \monospaced{update-source} command.
+    \item Next-hop modification --- for all iBGP peerings the router is configured to overwrite the Next-Hop field by putting its address as Next-Hop, before sending the route advertisement to its iBGP peer; this is done with the \monospaced{next-hop-self} command
+\end{itemize}
+The template then loops over a list of networks (field \monospaced{networks}) and configure each one of them to be advertised via BGP updates. Finally, the \monospaced{no bgp ebgp-requires-policy} rule is added: this allows us to let BGP run without needing all BGP updates to have a policy.
+
+The part of the template dealing with BGP is represented in Listing \ref{lst:template_bgp}:
+\begin{lstlisting}[style=styleJinja, caption=FRR template - BGP, label=lst:template_bgp]
+{# === BGP === -#}
+{% if bgp -%}
+router bgp {{bgp.AS}}
+    bgp router-id {{bgp.ID}}
+    no bgp ebgp-requires-policy
+    bgp bestpath as-path multipath-relax
+{% for nb in bgp.neighbors -%}
+    {% if nb.AS %}
+    neighbor {{nb.ipv4}} remote-as {{nb.AS}}
+    {% if bgp.lo_eBGP %}
+    neighbor {{nb.ipv4}} update-source {{bgp.lo}}
+    {% endif -%}
+    {% else %}
+    neighbor {{nb.ipv4}} remote-as {{bgp.AS}}
+    neighbor {{nb.ipv4}} next-hop-self
+    {% if bgp.lo_iBGP %}
+    neighbor {{nb.ipv4}} update-source {{bgp.lo}}
+    {% endif -%}
+    {% endif -%}
+{% endfor -%}
+{% for net in bgp.networks %}
+    network {{net.prefix}} mask {{net.mask}}
+{% endfor %}
+!
+{% for nb in bgp.neighbors -%}
+clear ip bgp {{nb.ipv4}} soft in
+clear ip bgp {{nb.ipv4}} soft out
+{% endfor -%}
+{% endif -%}
+!
+\end{lstlisting}
+The template also loops again over the list of neighbors (field \monospaced{neighbors}) and clears all routes received and sent to each neighbor: this doesn't regard the actual BGP configuration, it is done to enforce a refreshing of all BGP routes in the system, in order to avoiding possible errors in the configuration phase.\newline
+An example of a parameters file to be passed, compliant with the previously described part of template, is represented in the following Listing \ref{lst:template_bgp_data}:
+\begin{lstlisting}[style=styleYml, caption=BGP parameters, label=lst:template_bgp_data,
+    morekeywords={bgp, AS, ID, lo_iBGP, lo_eBGP, lo,neighbors,ipv4}]
+bgp:
+  AS: 65020
+  ID: 192.168.100.11
+  lo_iBGP: True
+  lo_eBGP: False
+  lo: lo
+
+  neighbors:
+  - ipv4: 10.1.1.1
+    AS: 64501
+  - ipv4: 10.2.1.1
+    AS: 64502
+  - ipv4: 192.168.100.12 # No AS specified -> same AS
+  - ipv4: 192.168.100.21
+  - ipv4: 192.168.100.22
+\end{lstlisting}
+The resulting part of the .conf file is represented in the following Listing \ref{lst:template_bgp_conf}:
+\begin{lstlisting}[style=styleConf, caption=BGP configuration example, label=lst:template_bgp_conf]
+router bgp 65020
+    bgp router-id 192.168.100.11
+    neighbor 10.1.1.1 remote-as 64501
+    neighbor 10.2.1.1 remote-as 64502
+    neighbor 192.168.100.12 remote-as 65020
+    neighbor 192.168.100.12 next-hop-self
+    neighbor 192.168.100.12 update-source lo
+    neighbor 192.168.100.21 remote-as 65020
+    neighbor 192.168.100.21 next-hop-self
+    neighbor 192.168.100.21 update-source lo
+    neighbor 192.168.100.22 remote-as 65020
+    neighbor 192.168.100.22 next-hop-self
+    neighbor 192.168.100.22 update-source lo
+    no bgp ebgp-requires-policy
+!
+clear ip bgp 10.1.1.1 soft in
+clear ip bgp 10.1.1.1 soft out
+clear ip bgp 10.2.1.1 soft in
+clear ip bgp 10.2.1.1 soft out
+clear ip bgp 192.168.100.12 soft in
+clear ip bgp 192.168.100.12 soft out
+clear ip bgp 192.168.100.21 soft in
+clear ip bgp 192.168.100.21 soft out
+clear ip bgp 192.168.100.22 soft in
+clear ip bgp 192.168.100.22 soft out
+!
+\end{lstlisting}
+
+\subsection{Alpine template}\label{sec:template_alpine}
+The template designed for Alpine nodes configures three aspects:
+\begin{itemize}
+    \item Interfaces --- field \monospaced{interfaces} --- Given a list of interfaces, the IP address (\monospaced{ipv4}) is configured for each one (\monospaced{name})
+    \item Static route --- field \monospaced{ipv4\_routes} --- All specified routes are added; both the destination (\monospaced{destination}) and next-hop field are requested (\monospaced{next\_hop})
+    \item Python --- field \monospaced{python} --- Designed for the manager node. It requires a python filename (\monospaced{file}), which is run in the background and its output is redirected to a log file (\monospaced{log}); if specified (\monospaced{messages}), some messages can be displayed via echo message
+\end{itemize}
+The template, once compiled, generates a shell file. The template used for Alpine nodes, both standard and Python-Alpine, is shown in Listing \ref{lst:template_alp}:
+\begin{lstlisting}[style=styleJinja, caption=Alpine template, label=lst:template_alp]      
+# === Interfaces
+{% if interfaces -%}
+{% for int in interfaces -%}
+ip link set {{ int.name }} up
+{% if int.ipv4 -%}
+ip addr add {{ int.ipv4 }} dev {{ int.name }}
+{% endif -%}
+{% endfor -%}
+{% endif %}
+
+{% if ipv4_routes -%}
+# === Static routes
+{% for route in ipv4_routes -%}
+ip route replace {{ route.destination }} via {{ route.next_hop }}
+{% endfor -%}
+{% endif %}
+
+{% if python -%}
+# === Python script
+# Run it in background, redirect output to log file
+nohup python3 -u {{python.file}} > {{python.log}} 2>&1 &
+# Messages
+{% for msg in python.msgs -%}
+echo {{msg}}
+{% endfor -%}
+{% endif %}
+
+\end{lstlisting}
+An example of a parameters file to be passed, compliant with the previously described template is represented in the following Listing \ref{lst:template_alp_data}:
+\begin{lstlisting}[style=styleYml, caption=Alpine parameters, label=lst:template_alp_data,
+    morekeywords={type,interfaces,name,switchport,ipv4,python,file,log,msgs,ipv4_routes,destination,next_hop}]
+type: alpine
+
+interfaces:
+- name: eth1
+  switchport: False
+  ipv4: 192.168.0.5/29
+
+ipv4_routes:
+- destination: 0.0.0.0/0
+  next_hop: 192.0.2.1
+
+python:
+  file: /main.py
+  log: /log_file.log
+  msgs: 
+   - "Python code is running in the background"
+   - "Output is being redirected to ./log_file.log"
+   - "Type tail -f log_file.log to see the live output"
+\end{lstlisting}
+The resulting part of the .conf file is represented in the following Listing \ref{lst:template_alp_conf}:
+\begin{lstlisting}[language=sh, style=styleShell, caption=Alpine configuration example, label=lst:template_alp_conf]
+# === Interfaces
+ip link set eth1 up
+ip addr add 192.168.0.5/29 dev eth1
+
+# === Static routing
+ip route replace 0.0.0.0/0 via 192.0.2.1
+
+# === Python file 
+# Run it in background, redirect output to log file
+nohup python3 -u /main.py > /log_file.log 2>&1 &
+# Messages
+echo Python code is running in the background
+echo Output is being redirected to ./log_file.log
+echo Type tail -f log_file.log to see the live output
+\end{lstlisting}
+
+\section{Network automation}
+As per project specification the traffic load balancing via BGP attributes is done only for the two upstream links (GW1-UP1 and GW2-UP2).\\
+The entire network automation procedure is contained inside a python script called \texttt{main.py}.
+The Manager node executes this Python script passed to it with \texttt{bind} CONTAINERlab command. The script is executed in launched in background at the network deploy using bash script called \texttt{mngr.sh}.\\
+Moreover, a file called \texttt{traffic-matrices.json} is passed to the manger as well. In this json file, the traffic estimation (Gb/s) for each route is included. An exmaple of a traffic matrix structure is shown in Listing \ref{lst:traffic-matrices}:
+\begin{lstlisting}[style=styleJson, caption=A Traffic Matrix, label=lst:traffic-matrices]
+{ "from": "192.0.2.0/24", "to": "203.0.113.0/25", "traf": 12 },
+{ "from": "198.51.100.0/24", "to": "203.0.113.0/25", "traf": 7 },
+{ "from": "192.0.2.0/24", "to": "203.0.113.128/25", "traf": 5 },
+{ "from": "198.51.100.0/24", "to": "203.0.113.128/25", "traf": 6 },
+{ "from": "203.0.113.0/25", "to": "192.0.2.0/24", "traf": 9 },
+{ "from": "203.0.113.128/25","to": "192.0.2.0/24", "traf": 3 },
+{ "from": "203.0.113.0/25", "to": "198.51.100.0/24", "traf": 6 },
+{ "from": "203.0.113.128/25", "to": "198.51.100.0/24", "traf": 10 }
+\end{lstlisting}
+
+\subsection{Load balancing algorithm}
+In the Python script, there is an infinite loop. In every iteration, a new traffic matrix is obtained, and a simple greedy algorithm splits the traffic. The greedy algorithm exploits two buckets in order to determine an efficient traffic distribution across upstream links. The algorithm operates iteratively\footnote{Between every iteration \texttt{time.sleep(180)} is called.} according to the following steps:
+\begin{enumerate}
+    \item Retrieve a route from the set of available routes.
+    \item Among the two buckets, select the one with the minimum amount of expected traffic.
+    \item Insert the selected route into the chosen bucket and update the bucket's total expected traffic by adding the traffic associated with the route.
+    \item If there are still unprocessed routes, return to step 1; otherwise, terminate the algorithm.
+\end{enumerate}
+An additional constraint is imposed on the route allocation process.  
+Consider the case in which a route from CU1 to the Internet is assigned to a given gateway (GW). If a subsequent route from CU2 to the Internet is processed, it must be served by the same gateway previously selected.
+In other words, it is not allowed to assign the route (CU1 $\rightarrow$ Internet) to GW1 and the route (CU2 $\rightarrow$ Internet) to GW2, unless additional mechanisms such as traffic engineering or segment routing are employed.\\
+Once the algorithm has been executed, \textit{local\_pref} is exploited to balance the outbound traffic and a filtering method for the inbound traffic. In particular, bucket1 is used to determine which routes must have a 200 local-pref to GW1 (to-internet routes) and which routes must be filtered in GW2 (from-internet routes). The opposite goes for bucket2.
+\\
+Note that we use route filtering instead of \textbf{MED} to balance inbound traffic, since the network topology does not allow MED to be applied effectively. In particular, MED is unsuitable for our scenario because it cannot discriminate among multiple entry points within the core AS. UP1 and UP2 each have only a single link toward the core (to GW1 and GW2, respectively); therefore, when traffic destined to a customer network reaches a given UP, there is only one possible path into the core. As a consequence, the only way to control which UP handles traffic for a given customer network is to select a single GW to announce that network. This ensures that only the corresponding UP advertises the route to the Internet.
+
+\subsection{Local Preference Setting}
+The \textit{Local Preference} is set using two route-maps, \textbf{SET-LP-GW1} and \textbf{SET-LP-GW2}, respectively applied on \texttt{GW1} and \texttt{GW2}.
+For each entry inside a bucket, an \textit{IP prefix-list} is created, together with a new rule in the corresponding route-map.
+This rule is applied when a match with the previously defined prefix-list occurs and consists solely in setting the local preference value to 200.
+If the route map is created in GW1, this has to be applied to the routes received from UP1. The opposite goes for GW2 and UP2.
+\begin{lstlisting}[language=Python, style=stylePython, caption=Local Preference Route Map Creation, label=lst:LP-ROUTEMAP-CREATION]
+def configure_bgp_local_pref(gw_ip, route_out_map_name, bucket):
+
+    my_up = UP1_IP if gw_ip == GW1_IP else UP2_IP
+    my_up_as = UP1_AS if gw_ip == GW1_IP else UP2_AS
+
+    cmds = ['configure terminal']
+
+    seq = 10
+
+    for entry in bucket:
+        # from internet route, not interesting here
+        if(entry == CU1_NET or entry == CU2_NET):
+            continue
+        
+        prefix = entry
+        pl_name = f'PL-{prefix.replace("/", "_")}'
+        
+        cmds.append(f'ip prefix-list {pl_name} permit {prefix}')    
+        cmds.append(f'route-map {route_out_map_name} permit {seq}')
+        cmds.append(f' match ip address prefix-list {pl_name}')
+        cmds.append(f' set local-preference 200')
+
+        seq += 10
+
+    # catch all preference
+    cmds.append(f'route-map {route_out_map_name} permit 999')
+
+    cmds.append(f'router bgp {MY_AS}')
+    cmds.append(f' neighbor {my_up} remote-as {my_up_as}')
+    cmds.append(f' neighbor {my_up} route-map {route_out_map_name} in')
+
+    cmds.append('end')
+
+    vtysh_cmd = "vtysh \\\n" + " \\\n".join([f'    -c "{c}"' for c in cmds])
+\end{lstlisting}
+After the command building, this will be passed to the target gateway using \texttt{paramiko} library.
+
+
+\subsection{Filtering method setting}
+Similarly to local preference, filtering is set using 2 route-maps as well: \textbf{SET-FILTERING-GW1} and \textbf{SET-FILTERING-GW2}. After ip-prefix list is created, a new \textbf{deny} rule, matching with the ip-prefix, is defined. This route-map is applied to all iBGP neighbors of the interested gateway\footnote{Note that in this case bucket1 is used to create deny rules on GW2, and bucket2 for GW1.}. 
+\begin{lstlisting}[language=Python, style=stylePython, caption=Filtering Route Map Creation, label=lst:FILTERING-ROUTEMAP-CREATION]
+def configure_filtering(gw_ip, route_in_map_name, bucket):
+    
+    cmds = ['configure terminal']
+
+    seq = 10
+
+    for entry in bucket:
+        # to internet route, not interesting here
+        if not (entry == CU1_NET or entry == CU2_NET):
+            continue
+
+        # buiding filter using route map
+        
+        prefix = entry
+        pl_name = f'PL-{prefix.replace("/", "_")}'
+        
+        cmds.append(f'ip prefix-list {pl_name} permit {prefix}')
+        cmds.append(f'route-map {route_in_map_name} deny {seq}')
+        cmds.append(f' match ip address prefix-list {pl_name}')
+
+        seq += 10
+    
+    # catch-all route map
+    cmds.append(f'route-map {route_in_map_name} permit 999')
+
+    # appling the route map
+    cmds.append(f' neighbor {my_up} remote-as {my_up_as}')
+    cmds.append(f' neighbor {my_up} route-map {route_inbound_map_name} out')
+
+    cmds.append('end')
+
+    vtysh_cmd = "vtysh \\\n" + " \\\n".join([f' -c "{c}"' for c in cmds])
+\end{lstlisting}
+
+\subsection{BGP Clearing}
+After route-maps have been created and therefore new rules have to be applied, it is important to clear BGP session with a \texttt{soft BGP clear}.
+\begin{lstlisting}[language=Python, style=stylePython, caption=BGP clearing, label=lst:BGP-CLEARING]
+def clear_bgp(peer_ip, ssh):
+
+    cmd = f
+        "vtysh 
+        -c 'clear ip bgp {peer_ip} soft in' 
+        -c 'clear ip bgp {peer_ip} soft out'"
+
+    stdin, stdout, stderr = ssh.exec_command(cmd)
+\end{lstlisting}
+
+\subsection{Route Maps Clearing}
+In loop iteration \textit{i}, iteration \textit{i-1} route-map have to be removed to avoid conflicts between rules.
+\begin{lstlisting}[language=Python, style=stylePython, caption=Rout-Map removing, label=lst:ROUTEMAP-REMOVING]
+def remove_all_route_maps(ip):
+
+    # ... ssh connection via paramiko ...
+
+    cmd = "vtysh -c 'show route-map'"
+    stdin, stdout, stderr = ssh.exec_command(cmd)
+    output = stdout.read().decode()
+
+    route_maps = set(
+        re.findall(r"^route-map:\s+(\S+)", output, re.MULTILINE)
+    )
+
+    cmds = ['configure terminal']
+
+    for rm in route_maps:
+        cmds.append(f"no route-map {rm}")
+
+    cmds.append("end")
+
+    vtysh_cmd = "vtysh \\\n" + " \\\n".join([f' -c "{c}"' for c in cmds])
+
+\end{lstlisting}
+\chapter{Testing}
+
+\section{Network deploy}
+Here is the network deploy, showed via \texttt{containerlab graph} command.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{containerlab-graph.png}
+    \caption{containerlab graph}
+    \label{fig:placeholder}
+\end{figure}
+
+\section{Nodes configuration}
+In order to show the correct nodes' configuration, here is \texttt{show bgp summary} and \texttt{show ip route}, executed on various nodes of the network. A \texttt{ping} command is called as well, both from n1 and n2, respectively to n3 and n4, as a further confirmation of the correct configuration.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/bgp-summary/ce1-bgp-summary.png}
+    \caption{CE1 - show ip bgp summary}
+    \label{fig:ce1-bgp-sum}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/bgp-summary/pe1-bgp-summary.png}
+    \caption{PE1 - show ip bgp summary}
+    \label{fig:pe1-bgp-sum}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/bgp-summary/gw1-bgp-summary.png}
+    \caption{GW1 - show ip bgp summary}
+    \label{fig:gw1-bgp-sum}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/bgp-summary/up1-bgp-summary.png}
+    \caption{UP1 - show ip bgp summary}
+    \label{fig:up1-bgp-sum}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/ping/n1-n3.png}
+    \caption{ping - from n1, to n3}
+    \label{fig:ping-n1->n3}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/ping/n2-n4.png}
+    \caption{ping - from n2, to n4}
+    \label{fig:ping-n2->n4}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/route-table/pe1-route-table.png}
+    \caption{PE1 - show ip route}
+    \label{fig:pe1-route-tab}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/route-table/gw1-route-table.png}
+    \caption{GW1 - show ip route}
+    \label{fig:gw1-route-tab}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/route-table/ce1-route-table.png}
+    \caption{CE1 - show ip route}
+    \label{fig:ce1-route-tab}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/route-table/up1-route-table.png}
+    \caption{UP1 - show ip route}
+    \label{fig:up1-route-tab}
+\end{figure}
+
+\section{Automation testing}
+
+\paragraph{Network Legend}
+\begin{itemize}
+    \item \textbf{Customer Network 1 (CuNet1)}: 192.0.2.0/24
+    \item \textbf{Customer Network 2 (CuNet2)}: 198.51.100.0/24
+    \item \textbf{External Network 1 (ExtNet1)}: 203.0.113.0/25
+    \item \textbf{External Network 2 (ExtNet2)}: 203.0.113.128/25
+\end{itemize}
+
+\subsubsection{Traffic Matrix 1}
+\begin{table}[h]
+\centering
+\label{tab:traffic-matrix-1}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{From / To} & \textbf{CuNet1} & \textbf{CuNet2} & \textbf{ExtNet1} & \textbf{ExtNet2} \\
+\hline
+\textbf{CuNet1}   & -- & -- & 12 & 5 \\
+\hline
+\textbf{CuNet2}   & -- & -- & 7  & 6 \\
+\hline
+\textbf{ExtNet1}  & 9  & 6  & -- & -- \\
+\hline
+\textbf{ExtNet2}  & 3  & 10 & -- & -- \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Traffic Matrix 2}
+\begin{table}[h]
+\centering
+\label{tab:traffic-matrix-2}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{From / To} & \textbf{CuNet1} & \textbf{CuNet2} & \textbf{ExtNet1} & \textbf{ExtNet2} \\
+\hline
+\textbf{CuNet1}   & -- & -- & 8  & 3 \\
+\hline
+\textbf{CuNet2}   & -- & -- & 25 & 6 \\
+\hline
+\textbf{ExtNet1}  & 5  & 4  & -- & -- \\
+\hline
+\textbf{ExtNet2}  & 2  & 7  & -- & -- \\
+\hline
+\end{tabular}
+\end{table}
+
+The greedy algorithm will provide the following result, w.r.t. the previous matrices:
+
+\subsubsection{Matrix 1 Buckets}
+\begin{itemize}
+    \item \textbf{Bucket 1}: ExtNet1, CuNet2
+    \item \textbf{Bucket 2}: ExtNet2, CuNet1
+\end{itemize}
+
+\subsubsection{Matrix 2 Buckets}
+\begin{itemize}
+    \item \textbf{Bucket 1}: ExtNet1
+    \item \textbf{Bucket 2}: ExtNet2, CuNet1, CuNet2
+\end{itemize}
+
+From the following images, we can clearly see the bgp table and routing table change accordingly to the bucket.
+
+\subsection{Resulting tables}
+\subsubsection{Matrix 1 - resulting tables}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/matrix1/pe1-matrix1-bgp.png}
+    \caption{PE1 - Traffic matrix 1 - show ip bgp}
+    \label{fig:pe1-bgp-mat1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/matrix1/int-matrix1-bgp.png}
+    \caption{INT - Traffic matrix 1 - show ip bgp}
+    \label{fig:int-bgp-mat1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/matrix1/pe1-matrix1-route-table.png}
+    \caption{PE1 - Traffic matrix 1 - show ip route}
+    \label{fig:pe1-route-mat1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/matrix1/int-matrix1-bgp.png}
+    \caption{INT - Traffic matrix 1 - show ip route}
+    \label{fig:int-route-mat1}
+\end{figure}
+
+\subsubsection{Matrix 2 - resulting tables}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/matrix2/pe1-matrix2-bgp.png}
+    \caption{PE1 - Traffic matrix 2 - show ip bgp}
+    \label{fig:pe1-bgp-mat2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/matrix2/int-matrix2-bgp.png}
+    \caption{INT - Traffic matrix 2 - show ip bgp}
+    \label{fig:int-bgp-mat2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/matrix2/pe1-matrix2-route-table.png}
+    \caption{PE1 - Traffic matrix 2 - show ip route}
+    \label{fig:pe1-route-mat2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/matrix2/int-matrix2-bgp.png}
+    \caption{INT - Traffic matrix 2 - show ip route}
+    \label{fig:int-route-mat2}
+\end{figure}
+
+\subsection{Traceroute examples}
+Finally, a comparision between \texttt{traceroute} commands. The following images show two uses of \texttt{traceroute}, the first one is launched when the current traffic matrix is matrix1, the second one when matrix2 is used.\\
+In order, there are the following:
+\begin{itemize}
+    \item n1 -\> n3
+    \item n2 -\> n4
+    \item n3 -\> n1
+    \item n4 -\> n2
+\end{itemize}
+
+\subsubsection{n1 to n3}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/n1-n3-trcrt.png}
+    \caption{Traceroute, from n1 to n3}
+    \label{fig:traceroute-n1-n3}
+\end{figure}
+\begin{itemize}
+    \item Matrix1: n1, CE1, PE1, GW1, UP1, INT, n3 
+    \item Matrix2: n1, CE1, PE1, GW1, UP1, INT, n3 
+\end{itemize}
+
+\subsubsection{n2 to n4}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/n2-n4-trcrt.png}
+    \caption{Traceroute, from n2 to n4}
+    \label{fig:traceroute-n2-n4}
+\end{figure}
+\begin{itemize}
+    \item Matrix1: n2, CE2, PE2, GW2, UP2, INT, n4 
+    \item Matrix2: n2, CE2, PE2, GW2, UP2, INT, n4 
+\end{itemize}
+
+\subsubsection{n3 to n1}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/n3-n1-trcrt.png}
+    \caption{Traceroute, from n3 to n1}
+    \label{fig:traceroute-n3-n1}
+\end{figure}
+\begin{itemize}
+    \item Matrix1: n3, INT, UP2, GW2, PE2, CE1, n1
+    \item Matrix2: n3, INT, UP2, GW2, PE2, CE1, n1
+\end{itemize}
+
+\subsubsection{n4 to n2}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acn-testing/load-balancing-test/n4-n2-trcrt.png}
+    \caption{Traceroute, from n4 to n2}
+    \label{fig:traceroute-n4-n2}
+\end{figure}
+\begin{itemize}
+    \item Matrix1: n4, INT, UP1, GW1, PE1, CE2, n2
+    \item Matrix2: n4, INT, UP2, GW2, PE1, CE2, n2
+\end{itemize}
+
+\chapter{Conclusion}
+\section{Results}
+The project successfully achieves its primary objectives:
+\begin{itemize}
+    \item automating the generation of network configuration files from YAML descriptions using \textbf{Jinja2};
+    \item deploying the network through \textbf{containerlab} based on the automatically generated configuration files;
+    \item implementing an automated load balancing mechanism by exploiting \textbf{BGP} features such as \textit{local\_preference} and route filtering.
+\end{itemize}
+
+\section{Future work}
+Despite these positive results, several aspects of the project can be further improved, particularly with respect to the load balancing strategy.
+\paragraph{Route maps}
+In the current implementation, route maps are periodically removed and re-created every three minutes. 
+While this approach is sufficient to demonstrate the automation mechanism and its effectiveness within the scope of this project, 
+it is not efficient and would be unsuitable in a real-world production environment.
+In practical scenarios, policy updates would typically occur less frequently, and route maps could be modified in place rather than being entirely removed and re-created, 
+thus reducing control-plane overhead and potential instability.
+\paragraph{BGP limitations}
+Furthermore, relying only on BGP for load balancing introduces intrinsic limitations. 
+BGP performs routing decisions at the prefix level rather than at the flow level and lacks native awareness of network congestion and link utilization. 
+To overcome these limitations, the proposed solution could be enhanced by integrating more advanced mechanisms such as \textbf{Traffic Engineering} and \textbf{Segment Routing}. 
+These technologies enable explicit control over flows (not only prefix based as BGP), improving load balancing flexibility and providing faster and more reliable reactions to network faults and congestion.
+\paragraph{Expansion}
+The current approach used to achieve a form of load balancing across the two upstream links can be replicated to balance traffic on the customer side of the network. We chose not to implement this as only the upstream links were required and it would be conceptually very similar, just increasing the complexity of the algorithm.
+
+
+\end{document}

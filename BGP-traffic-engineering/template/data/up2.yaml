@@ -1,0 +1,38 @@
+config_filename: UP2.conf
+
+name: UP2
+hostname: UP2
+username: admin
+password: False
+
+routing_enabled: True
+
+interfaces:
+- name: lo
+  ipv4: 172.31.0.2/32
+  switchport: False
+  description: LOOPBACK
+
+- name: eth0
+  description: MANAGEMENT
+
+- name: eth1
+  ipv4: 172.16.3.1/24
+  switchport: False
+  description: to_INTERNET
+
+- name: eth2
+  ipv4: 172.16.1.2/30
+  switchport: False
+  description: to_GW2
+
+
+bgp:
+  AS: 65542
+  ID: 172.31.0.2
+
+  neighbors:
+  - ipv4: 172.16.1.1 # GW2
+    AS: 65020
+  - ipv4: 172.16.3.2 # INT
+    AS: 65551

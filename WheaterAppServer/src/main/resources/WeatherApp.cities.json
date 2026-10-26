@@ -1,0 +1,633 @@
+[{
+  "_id": "mil-lom-45.4643-9.1895",
+  "name": "Milan",
+  "region": "Lombardy",
+  "latitude": 45.46427,
+  "longitude": 9.18951,
+  "elevation": 122,
+  "followers": 0,
+  "startDate": {
+    "$date": "2000-05-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-05-01T23:00:00.000Z"
+  },
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "tur-pie-45.0705-7.6868",
+  "name": "Turin",
+  "region": "Piedmont",
+  "latitude": 45.07049,
+  "longitude": 7.68682,
+  "elevation": 239,
+  "followers": 0,
+  "startDate": {
+    "$date": "2000-05-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-05-01T23:00:00.000Z"
+  },
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "gen-lig-44.4048-8.9444",
+  "name": "Genoa",
+  "region": "Liguria",
+  "latitude": 44.40478,
+  "longitude": 8.94439,
+  "elevation": 19,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "bre-lom-45.5356-10.2147",
+  "name": "Brescia",
+  "region": "Lombardy",
+  "latitude": 45.53558,
+  "longitude": 10.21472,
+  "elevation": 149,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "ber-lom-45.696-9.6672",
+  "name": "Bergamo",
+  "region": "Lombardy",
+  "latitude": 45.69601,
+  "longitude": 9.66721,
+  "elevation": 249,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "ver-ven-45.4299-10.9844",
+  "name": "Verona",
+  "region": "Veneto",
+  "latitude": 45.4299,
+  "longitude": 10.98444,
+  "elevation": 59,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "ven-ven-45.4371-12.3326",
+  "name": "Venice",
+  "region": "Veneto",
+  "latitude": 45.43713,
+  "longitude": 12.33265,
+  "elevation": 2,
+  "followers": 0,
+  "startDate": {
+    "$date": "2000-05-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-05-01T23:00:00.000Z"
+  },
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "pad-ven-45.408-11.8859",
+  "name": "Padua",
+  "region": "Veneto",
+  "latitude": 45.40797,
+  "longitude": 11.88586,
+  "elevation": 12,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "tri-fri-45.6495-13.7768",
+  "name": "Trieste",
+  "region": "Friuli Venezia Giulia",
+  "latitude": 45.64953,
+  "longitude": 13.77678,
+  "elevation": 2,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "par-emi-44.7993-10.3262",
+  "name": "Parma",
+  "region": "Emilia-Romagna",
+  "latitude": 44.79935,
+  "longitude": 10.32618,
+  "elevation": 57,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "mod-emi-44.6478-10.9254",
+  "name": "Modena",
+  "region": "Emilia-Romagna",
+  "latitude": 44.64783,
+  "longitude": 10.92539,
+  "elevation": 34,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "bol-emi-44.4938-11.3387",
+  "name": "Bologna",
+  "region": "Emilia-Romagna",
+  "latitude": 44.49381,
+  "longitude": 11.33875,
+  "elevation": 54,
+  "followers": 0,
+  "lastUpdate": {
+    "$date": "2025-05-01T23:00:00.000Z"
+  },
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "reg-emi-44.6983-10.6312",
+  "name": "Reggio Emilia",
+  "region": "Emilia-Romagna",
+  "latitude": 44.69825,
+  "longitude": 10.63125,
+  "elevation": 58,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "tre-tre-46.0679-11.1211",
+  "name": "Trento",
+  "region": "Trentino-Alto Adige",
+  "latitude": 46.06787,
+  "longitude": 11.12108,
+  "elevation": 194,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "bol-tre-46.4907-11.3398",
+  "name": "Bolzano",
+  "region": "Trentino-Alto Adige",
+  "latitude": 46.49067,
+  "longitude": 11.33982,
+  "elevation": 262,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "aos-aos-45.7376-7.3172",
+  "name": "Aosta",
+  "region": "Aosta Valley",
+  "latitude": 45.73764,
+  "longitude": 7.31722,
+  "elevation": 583,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "udi-fri-46.0693-13.2371",
+  "name": "Udine",
+  "region": "Friuli Venezia Giulia",
+  "latitude": 46.0693,
+  "longitude": 13.23715,
+  "elevation": 113,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "pia-emi-45.0524-9.6934",
+  "name": "Piacenza",
+  "region": "Emilia-Romagna",
+  "latitude": 45.05242,
+  "longitude": 9.69342,
+  "elevation": 61,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "cre-lom-45.1332-10.0213",
+  "name": "Cremona",
+  "region": "Lombardy",
+  "latitude": 45.13325,
+  "longitude": 10.02129,
+  "elevation": 45,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "la -lig-44.103-9.8238",
+  "name": "La Spezia",
+  "region": "Liguria",
+  "latitude": 44.103,
+  "longitude": 9.82375,
+  "elevation": 3,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "flo-tus-43.7792-11.2463",
+  "name": "Florence",
+  "region": "Tuscany",
+  "latitude": 43.77925,
+  "longitude": 11.24626,
+  "elevation": 50,
+  "followers": 0,
+  "startDate": {
+    "$date": "2000-05-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-05-01T23:00:00.000Z"
+  },
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "pis-tus-43.7085-10.4036",
+  "name": "Pisa",
+  "region": "Tuscany",
+  "latitude": 43.70853,
+  "longitude": 10.4036,
+  "elevation": 4,
+  "followers": 0,
+  "startDate": {
+    "$date": "2000-05-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-05-01T23:00:00.000Z"
+  },
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "sie-tus-43.3182-11.3306",
+  "name": "Siena",
+  "region": "Tuscany",
+  "latitude": 43.31822,
+  "longitude": 11.33064,
+  "elevation": 322,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "are-tus-43.4628-11.8807",
+  "name": "Arezzo",
+  "region": "Tuscany",
+  "latitude": 43.46276,
+  "longitude": 11.88068,
+  "elevation": 296,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "pra-tus-43.8805-11.097",
+  "name": "Prato",
+  "region": "Tuscany",
+  "latitude": 43.8805,
+  "longitude": 11.09699,
+  "elevation": 61,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "liv-tus-43.5443-10.3262",
+  "name": "Livorno",
+  "region": "Tuscany",
+  "latitude": 43.54427,
+  "longitude": 10.32615,
+  "elevation": 3,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "rom-lat-41.8919-12.5113",
+  "name": "Rome",
+  "region": "Latium",
+  "latitude": 41.89193,
+  "longitude": 12.51133,
+  "elevation": 20,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "lat-lat-41.4661-12.9043",
+  "name": "Latina",
+  "region": "Latium",
+  "latitude": 41.46614,
+  "longitude": 12.9043,
+  "elevation": 21,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "fro-lat-41.6398-13.3411",
+  "name": "Frosinone",
+  "region": "Latium",
+  "latitude": 41.63976,
+  "longitude": 13.34109,
+  "elevation": 291,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "ter-umb-42.5633-12.6433",
+  "name": "Terni",
+  "region": "Umbria",
+  "latitude": 42.56335,
+  "longitude": 12.64329,
+  "elevation": 130,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "per-umb-43.1122-12.3888",
+  "name": "Perugia",
+  "region": "Umbria",
+  "latitude": 43.1122,
+  "longitude": 12.38878,
+  "elevation": 493,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "anc-the-43.5942-13.5034",
+  "name": "Ancona",
+  "region": "The Marches",
+  "latitude": 43.5942,
+  "longitude": 13.50337,
+  "elevation": 16,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "asc-the-42.8535-13.5739",
+  "name": "Ascoli Piceno",
+  "region": "The Marches",
+  "latitude": 42.85351,
+  "longitude": 13.57395,
+  "elevation": 154,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "pes-the-43.9092-12.9164",
+  "name": "Pesaro",
+  "region": "The Marches",
+  "latitude": 43.90921,
+  "longitude": 12.9164,
+  "elevation": 11,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "nap-cam-40.8522-14.2681",
+  "name": "Naples",
+  "region": "Campania",
+  "latitude": 40.85216,
+  "longitude": 14.26811,
+  "elevation": 17,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "sal-cam-40.6754-14.7933",
+  "name": "Salerno",
+  "region": "Campania",
+  "latitude": 40.67545,
+  "longitude": 14.79328,
+  "elevation": 4,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "cas-cam-41.0726-14.3323",
+  "name": "Caserta",
+  "region": "Campania",
+  "latitude": 41.07262,
+  "longitude": 14.33231,
+  "elevation": 68,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "bar-apu-41.1207-16.8698",
+  "name": "Bari",
+  "region": "Apulia",
+  "latitude": 41.12066,
+  "longitude": 16.86982,
+  "elevation": 5,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "lec-apu-40.3548-18.1724",
+  "name": "Lecce",
+  "region": "Apulia",
+  "latitude": 40.35481,
+  "longitude": 18.17244,
+  "elevation": 49,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "bri-apu-40.6322-17.9361",
+  "name": "Brindisi",
+  "region": "Apulia",
+  "latitude": 40.63215,
+  "longitude": 17.93607,
+  "elevation": 13,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "tar-apu-40.4644-17.2471",
+  "name": "Taranto",
+  "region": "Apulia",
+  "latitude": 40.46438,
+  "longitude": 17.24707,
+  "elevation": 15,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "fog-apu-41.4584-15.5519",
+  "name": "Foggia",
+  "region": "Apulia",
+  "latitude": 41.45845,
+  "longitude": 15.55188,
+  "elevation": 76,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "pot-bas-40.6418-15.8079",
+  "name": "Potenza",
+  "region": "Basilicate",
+  "latitude": 40.64175,
+  "longitude": 15.80794,
+  "elevation": 819,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "mat-bas-40.666-16.6046",
+  "name": "Matera",
+  "region": "Basilicate",
+  "latitude": 40.66599,
+  "longitude": 16.60463,
+  "elevation": 401,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "cat-cal-38.8825-16.6009",
+  "name": "Catanzaro",
+  "region": "Calabria",
+  "latitude": 38.88247,
+  "longitude": 16.60086,
+  "elevation": 320,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "reg-cal-38.1105-15.6613",
+  "name": "Reggio Calabria",
+  "region": "Calabria",
+  "latitude": 38.11047,
+  "longitude": 15.66129,
+  "elevation": 31,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "cos-cal-39.2989-16.2531",
+  "name": "Cosenza",
+  "region": "Calabria",
+  "latitude": 39.2989,
+  "longitude": 16.25307,
+  "elevation": 238,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "cam-mol-41.5595-14.6674",
+  "name": "Campobasso",
+  "region": "Molise",
+  "latitude": 41.55947,
+  "longitude": 14.66737,
+  "elevation": 701,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "pal-sic-38.132-13.3356",
+  "name": "Palermo",
+  "region": "Sicily",
+  "latitude": 38.13205,
+  "longitude": 13.33561,
+  "elevation": 14,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "cat-sic-37.4922-15.0704",
+  "name": "Catania",
+  "region": "Sicily",
+  "latitude": 37.49223,
+  "longitude": 15.07041,
+  "elevation": 7,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "mes-sic-38.1939-15.5526",
+  "name": "Messina",
+  "region": "Sicily",
+  "latitude": 38.19394,
+  "longitude": 15.55256,
+  "elevation": 3,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "syr-sic-37.0754-15.2866",
+  "name": "Syracuse",
+  "region": "Sicily",
+  "latitude": 37.07542,
+  "longitude": 15.28664,
+  "elevation": 17,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "tra-sic-38.0176-12.5362",
+  "name": "Trapani",
+  "region": "Sicily",
+  "latitude": 38.0176,
+  "longitude": 12.53617,
+  "elevation": 3,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "agr-sic-37.3107-13.5766",
+  "name": "Agrigento",
+  "region": "Sicily",
+  "latitude": 37.31065,
+  "longitude": 13.57661,
+  "elevation": 230,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "cag-sar-39.2305-9.1192",
+  "name": "Cagliari",
+  "region": "Sardinia",
+  "latitude": 39.23054,
+  "longitude": 9.11917,
+  "elevation": 6,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "sas-sar-40.7259-8.5555",
+  "name": "Sassari",
+  "region": "Sardinia",
+  "latitude": 40.72586,
+  "longitude": 8.55552,
+  "elevation": 225,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "olb-sar-40.9234-9.498",
+  "name": "Olbia",
+  "region": "Sardinia",
+  "latitude": 40.92337,
+  "longitude": 9.49802,
+  "elevation": 15,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "nuo-sar-40.3199-9.3257",
+  "name": "Nuoro",
+  "region": "Sardinia",
+  "latitude": 40.31991,
+  "longitude": 9.32568,
+  "elevation": 549,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "l’a-abr-42.3505-13.3995",
+  "name": "L’Aquila",
+  "region": "Abruzzo",
+  "latitude": 42.35055,
+  "longitude": 13.39954,
+  "elevation": 714,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+},
+{
+  "_id": "rim-emi-44.0575-12.5653",
+  "name": "Rimini",
+  "region": "Emilia-Romagna",
+  "latitude": 44.05755,
+  "longitude": 12.56528,
+  "elevation": 5,
+  "followers": 0,
+  "_class": "it.unipi.lsmsd.model.City"
+}]

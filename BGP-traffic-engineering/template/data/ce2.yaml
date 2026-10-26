@@ -1,0 +1,47 @@
+config_filename: CE2.conf
+
+name: CE2
+hostname: CE2
+username: admin
+password: False
+
+routing_enabled: True
+
+interfaces:
+- name: lo
+  ipv4: 10.0.0.2/32
+  switchport: False
+  description: LOOPBACK
+
+- name: eth0
+  description: MANAGEMENT
+
+- name: eth1
+  ipv4: 198.51.100.1/24
+  switchport: False
+  description: to_Private
+
+- name: eth2
+  ipv4: 10.2.2.1/30
+  switchport: False
+  description: to_PE2
+
+- name: eth3
+  ipv4: 10.2.1.1/30
+  switchport: False
+  description: to_PE1
+
+
+bgp:
+  AS: 64502
+  ID: 10.0.0.2
+
+  neighbors:
+  - ipv4: 10.2.1.2 # PE1
+    AS: 65020
+  - ipv4: 10.2.2.2 # PE2
+    AS: 65020
+
+  networks:
+  - prefix: 198.51.100.0
+    mask: 255.255.255.0

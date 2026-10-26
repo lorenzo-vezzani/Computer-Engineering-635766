@@ -1,0 +1,33 @@
+# Enable debug logging
+debug: true
+
+# MongoDB Configuration
+spring:
+  data:
+    mongodb:
+      uri: mongodb://10.1.1.9:27020,10.1.1.84:27020,10.1.1.87:27020/WeatherApp?replicaSet=lsmdb
+      auto-index-creation: true
+      database: WeatherApp
+  mongo:
+    measurement-collection: hourly_measurements
+    city-collection: cities
+    user-collection: users
+
+
+# Open-Meteo API Retry Configuration (Resilience4j)
+resilience4j:
+  retry:
+    instances:
+      OpenMeteoApiRetry:
+        max-attempts: 3
+        wait-duration: 2s
+        # Increase the wait duration exponentially between Retry attempts to avoid overwhelming the API
+        exponential-backoff-multiplier: 2
+        # Exceptions in which resilience4j retries API call 
+        retry-exceptions:
+          - org.springframework.web.client.ResourceAccessException
+          - org.springframework.web.client.HttpServerErrorException
+
+#Logging Configuration
+logging:
+  config: classpath:logback-spring.xml

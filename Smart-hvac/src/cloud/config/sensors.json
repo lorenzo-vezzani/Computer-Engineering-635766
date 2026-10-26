@@ -1,0 +1,84 @@
+{
+    "building": {
+        "max_power": 2500
+    },
+
+    "mqtt": {
+        "host": "localhost",
+        "port": 1883,
+        "client_id": "cloud-client",
+        "username": null,
+        "password": null
+    },
+
+    "database": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "root",
+        "name": "iot_cloud"
+    },
+
+    "rooms": [
+        {
+            "id": 1,
+            "name": "room1",
+            "priority": 3,
+            "max_power": 3000,
+            "sensor_topic": "building/room1/telemetry",
+            "hvac_control_topic": "building/room1/hvac/control",
+            "start_activation_topic": "building/room1/hvac/start",
+            "end_activation_topic": "building/room1/hvac/end",
+            "test_measurements_topic": "building/room1/hvac/test_measurements",
+            "threshold_topic": "building/room1/hvac/threshold"
+        },
+        {
+            "id": 2,
+            "name": "room2",
+            "priority": 2,
+            "max_power": 1500,
+            "sensor_topic": "building/room2/telemetry",
+            "hvac_control_topic": "building/room2/hvac/control",
+            "start_activation_topic": "building/room2/hvac/start",
+            "end_activation_topic": "building/room2/hvac/end",
+            "test_measurements_topic": "building/room2/hvac/test_measurements",
+            "threshold_topic": "building/room2/hvac/threshold"
+        },
+        {
+            "id": 3,
+            "name": "room3",
+            "priority": 2,
+            "max_power": 2000,
+            "sensor_topic": "building/room3/telemetry",
+            "hvac_control_topic": "building/room3/hvac/control",
+            "start_activation_topic": "building/room3/hvac/start",
+            "end_activation_topic": "building/room3/hvac/end",
+            "test_measurements_topic": "building/room3/hvac/test_measurements",
+            "threshold_topic": "building/room3/hvac/threshold"
+        },
+        {
+            "id": 4,
+            "name": "room4",
+            "priority": 2,
+            "max_power": 2500,
+            "sensor_topic": "building/room4/telemetry",
+            "hvac_control_topic": "building/room4/hvac/control",
+            "start_activation_topic": "building/room4/hvac/start",
+            "end_activation_topic": "building/room4/hvac/end",
+            "test_measurements_topic": "building/room4/hvac/test_measurements",
+            "threshold_topic": "building/room4/hvac/threshold"
+        },
+        {
+            "id": 5,
+            "name": "room5",
+            "priority": 1,
+            "max_power": 1000,
+            "sensor_topic": "building/room5/telemetry",
+            "hvac_control_topic": "building/room5/hvac/control",
+            "start_activation_topic": "building/room5/hvac/start",
+            "end_activation_topic": "building/room5/hvac/end",
+            "test_measurements_topic": "building/room5/hvac/test_measurements",
+            "threshold_topic": "building/room5/hvac/threshold"
+        }
+    ]
+}
